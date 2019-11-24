@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-mac-osx.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="shellcode,二进制,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="先将API的hash函数压入栈  esi指向esp-0xc  清空ebx，移动栈顶指针  将user32字符串压入栈中">
+<meta name="keywords" content="shellcode,二进制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通用ShellCode">
+<meta property="og:url" content="http://yoursite.com/2019/06/25/通用shellcode/index.html">
+<meta property="og:site_name" content="Gale&#39;s Blog">
+<meta property="og:description" content="先将API的hash函数压入栈  esi指向esp-0xc  清空ebx，移动栈顶指针  将user32字符串压入栈中">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/1556886164887.png">
+<meta property="og:image" content="http://yoursite.com/images/f95fbe65fffd2467b3fdad7293b6b0d6.jpg">
+<meta property="og:updated_time" content="2019-11-24T02:34:52.436Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="通用ShellCode">
+<meta name="twitter:description" content="先将API的hash函数压入栈  esi指向esp-0xc  清空ebx，移动栈顶指针  将user32字符串压入栈中">
+<meta name="twitter:image" content="http://yoursite.com/images/1556886164887.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/25/通用shellcode/">
+
+
+
+
+
+  <title>通用ShellCode | Gale's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Gale's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/25/通用shellcode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gale">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gale's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">通用ShellCode</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-25T10:58:00+08:00">
+                2019-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ol>
+<li><p>先将API的hash函数压入栈</p>
+</li>
+<li><p>esi指向esp-0xc</p>
+</li>
+<li><p>清空ebx，移动栈顶指针</p>
+</li>
+<li><p>将user32字符串压入栈中</p>
+</li>
+</ol>
+<a id="more"></a>
+<h3 id="在win-32平台下定位kernel32-dll中的API地址"><a href="#在win-32平台下定位kernel32-dll中的API地址" class="headerlink" title="在win_32平台下定位kernel32.dll中的API地址"></a>在win_32平台下定位kernel32.dll中的API地址</h3><p>（1）段选择字FS在内存中找到当前的线程环境块TEB</p>
+<p>（2）TEB偏移位置0x30的地方存放着指向进程环境块PEB的指针</p>
+<p>（3）进程环境块偏移位置为0x0C的地方存放着指向PEB_LDR_DATA结构体的指针，其中存放着已经被进程装载的动态链接库的信息</p>
+<p>（4）PEB_LDR_DATA结构体偏移位置为0x1C的地方存放着指向模块初始化链表的头指针InInitializationOrderModuleList</p>
+<p>（5）模块化初始化链表InInitializationOrderModuleList中按顺序存放着PE装入运行时初始化模块的信息，第一个链表结点是ntdll.dll，第二个链表结点就是kernel32.dll</p>
+<p>（6）找到属于kernel32.dll的结点后，在其基础上再偏移0x08就是kernel32.dll在内存中的加载基地址</p>
+<p>（7）从kernrl32.dll的加载基地址算起，偏移0x3C的地方就是其PE头</p>
+<p>（8）PE头偏移0x78的地方存放着指向函数导出表的指针</p>
+<p>（9）至此，我们可以按如下方式在函数导出表中算出所需函数的入口地址</p>
+<ul>
+<li>导出表偏移0x1C处的指针指向存储导出函数偏移地址（RVA）的列表</li>
+<li>导出表偏移0x20处的指针指向存储导出函数函数名的列表</li>
+<li>函数的RVA地址和名字按照顺序存放在上述两个列表中，我们可以在名称列表中定位到所需的函数是第几个，然后在地址列表中找到对应的RVA</li>
+<li>获得RVA中，再加上前边已经得到的动态链接库的加载基址，就获得了所需API此刻在内存中的虚拟地址，这个地址就是我们在shellcode中调用需要的地址</li>
+</ul>
+<p>PS：在寻找kernel32.dll的基地址时，需要将ECX指向的数据取出来，将其作为地址再次赋值给ECX，这里的地址就是kernel32.dll的地址，说明在内存中链表结构，当前偏移0字节的地址就是下一个结点的地址。</p>
+<p>PUSHAD：Push EAX,ECX,EDX,EBX, original ESP,EBP,ESI, and EDI</p>
+<p>ROR:循环右移指令</p>
+<p>;SHL(Shift Left):             逻辑左移<br>;SHR(Shift Right):            逻辑右移<br>;SAL(Shift Arithmetic Left):  算术左移<br>;SAR(Shift Arithmetic Right): 算术右移</p>
+<p>;其中的 SHL 和 SAL 相同, 但 SHR 和 SAR 不同.</p>
+<p>;SHL、SAL: 每位左移, 低位补 0,  高位进 CF<br>;SHR     : 每位右移, 低位进 CF, 高位补 0<br>;SAR     : 每位右移, 低位进 CF, 高位不变</p>
+<p>;它们的结果影响 OF、SF、ZF、PF、CF<br>;它们的指令格式相同:<br>SHL r/m, i8<br>SHL r/m, CL</p>
+<p>ROL、ROR、RCL、RCR: 循环移位指令</p>
+<p>;ROL(Rotate Left):                循环左移<br>;ROR(Rotate Right):               循环右移<br>;RCL(Rotate through Carry Left):  带进位循环左移<br>;RCR(Rotate through Carry Right): 带进位循环右移</p>
+<p>;ROL: 循环左移, 高位到低位并送 CF<br>;ROR: 循环右移, 低位到高位并送 CF<br>;RCL: 循环左移, 进位值(原CF)到低位, 高位进 CF<br>;RCR: 循环右移, 进位值(原CF)到高位, 低位进 CF</p>
+<p>;它们的结果影响 OF、CF<br>;它们的指令格式相同:<br>SHL r/m, i8<br>SHL r/m, CL</p>
+<p>STOSD：For legacy mode,store EAX at address ES:(E)DI;for 64-bit mode store EAX at address RDI or EDI.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> popup_general[] = </span><br><span class="line"><span class="string">"\x68\x6A\x0A\x38\x1E\x68\x63\x89"</span></span><br><span class="line"><span class="string">"\xD1\x4F\x68\x32\x74\x91\x0C\x8B"</span></span><br><span class="line"><span class="string">"\xF4\x8D\x7E\xF4\x33\xDB\xB7\x04"</span></span><br><span class="line"><span class="string">"\x2B\xE3\x66\xBB\x33\x32\x53\x68"</span></span><br><span class="line"><span class="string">"\x75\x73\x65\x72\x54\x33\xD2\x64"</span></span><br><span class="line"><span class="string">"\x8B\x5A\x30\x8B\x4B\x0C\x8B\x49"</span></span><br><span class="line"><span class="string">"\x1C\x8B\x09\x8B\x69\x08\xAD\x3D"</span></span><br><span class="line"><span class="string">"\x6A\x0A\x38\x1E\x75\x05\x95\xFF"</span></span><br><span class="line"><span class="string">"\x57\xF8\x95\x60\x8B\x45\x3C\x8B"</span></span><br><span class="line"><span class="string">"\x4C\x05\x78\x03\xCD\x8B\x59\x20"</span></span><br><span class="line"><span class="string">"\x03\xDD\x33\xFF\x47\x8B\x34\xBB"</span></span><br><span class="line"><span class="string">"\x03\xF5\x99\x0F\xBE\x06\x3A\xC4"</span></span><br><span class="line"><span class="string">"\x74\x08\xC1\xCA\x07\x03\xD0\x46"</span></span><br><span class="line"><span class="string">"\xEB\xF1\x3B\x54\x24\x1C\x75\xE4"</span></span><br><span class="line"><span class="string">"\x8B\x59\x24\x03\xDD\x66\x8B\x3C"</span></span><br><span class="line"><span class="string">"\x7B\x8B\x59\x1C\x03\xDD\x03\x2C"</span></span><br><span class="line"><span class="string">"\xBB\x95\x5F\xAB\x57\x61\x3D\x6A"</span></span><br><span class="line"><span class="string">"\x0A\x38\x1E\x75\xA9\x33\xDB\x53"</span></span><br><span class="line"><span class="string">"\x68\x77\x65\x73\x74\x68\x66\x61"</span></span><br><span class="line"><span class="string">"\x69\x6C\x8B\xC4\x53\x50\x50\x53"</span></span><br><span class="line"><span class="string">"\xFF\x57\xFC\x53\xFF\x57\xF8"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	__asm</span><br><span class="line">	&#123;</span><br><span class="line">		lea eax,popup_general</span><br><span class="line">		push eax</span><br><span class="line">		ret</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>很好奇，这里的shellcode是运行了动态的API地址，但是在前面并没有加载kernel32.dll的组件，程序运行成功，动态的获取了API的地址，运行直接调用messageBoxA函数的地址，可以直接运行成功，而在之前运行静态API函数地址的时候，如果在程序中没有加载kernel32.dll的组件，程序就会出现错误，不能成功运行，这里的原因还不是很清楚。PS：这里看到书P105页，突然发现，这段代码中运行了LoadLibraryA这个函数。</p>
+<p><img src="/images/1556886164887.png" alt="1556886164887"><br><img src="/images/f95fbe65fffd2467b3fdad7293b6b0d6.jpg" alt="f9"><br><strong>由于是通过调用ExitProcess退出程序，所以不用担心堆栈平衡等内存细节</strong></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/shellcode/" rel="tag"># shellcode</a>
+          
+            <a href="/tags/二进制/" rel="tag"># 二进制</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/25/hello-world/" rel="prev" title="Hello World">
+                Hello World <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/logo.jpg" alt="Gale">
+            
+              <p class="site-author-name" itemprop="name">Gale</p>
+              <p class="site-description motion-element" itemprop="description">Stay hungry, Stay foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#在win-32平台下定位kernel32-dll中的API地址"><span class="nav-number">1.</span> <span class="nav-text">在win_32平台下定位kernel32.dll中的API地址</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gale</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+  
+  
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_sphere.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
