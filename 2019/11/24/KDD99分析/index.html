@@ -94,13 +94,13 @@
 <meta property="og:site_name" content="Gale&#39;s Blog">
 <meta property="og:description" content="导入数据集">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://yoursite.com/output_18_0.png">
+<meta property="og:image" content="http://yoursite.com/images/output_18_0.png">
 <meta property="og:image" content="http://yoursite.com/images/output_37_0.png">
-<meta property="og:updated_time" content="2019-11-24T05:23:06.609Z">
+<meta property="og:updated_time" content="2019-11-24T08:00:11.861Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="KDD99分析">
 <meta name="twitter:description" content="导入数据集">
-<meta name="twitter:image" content="http://yoursite.com/output_18_0.png">
+<meta name="twitter:image" content="http://yoursite.com/images/output_18_0.png">
 
 
 
@@ -419,7 +419,7 @@ Name: result, dtype: object</code></pre><figure class="highlight python"><table>
 
 <pre><code>[491474, 1, 59, 16, 24, 19, 78, 2343, 2, 5]</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">plt.figure(figsize=(<span class="number">6</span>,<span class="number">9</span>)) <span class="comment">#调节图形大小</span></span><br><span class="line">labels = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>] <span class="comment">#定义标签</span></span><br><span class="line"><span class="comment"># sizes = [i for i in range(10): model1.labels_ == i] #每块值</span></span><br><span class="line">explode = (<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>) <span class="comment">#将某一块分割出来，值越大分割出的间隙越大</span></span><br><span class="line">patches,text1,text2 = plt.pie(sizes,</span><br><span class="line">                      explode=explode,</span><br><span class="line">                      labels=labels,</span><br><span class="line">                      autopct = <span class="string">'%3.2f%%'</span>, <span class="comment">#数值保留固定小数位</span></span><br><span class="line">                      shadow = <span class="literal">False</span>, <span class="comment">#无阴影设置</span></span><br><span class="line">                      startangle =<span class="number">90</span>, <span class="comment">#逆时针起始角度设置</span></span><br><span class="line">                      pctdistance = <span class="number">0.6</span>) <span class="comment">#数值距圆心半径倍数距离</span></span><br><span class="line"><span class="comment">#patches饼图的返回值，texts1饼图外label的文本，texts2饼图内部的文本</span></span><br><span class="line"><span class="comment"># x，y轴刻度设置一致，保证饼图为圆形</span></span><br><span class="line">plt.axis(<span class="string">'equal'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 
-<p><img src="/output_18_0.png" alt="output_18_0"></p>
+<p><img src="/images/output_18_0.png" alt="output_18_0"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">model3 = KMeans(n_clusters=<span class="number">10</span>).fit(kdd_data_comb.loc[:,[<span class="string">'count'</span>, <span class="string">'srv_count'</span>, <span class="string">'serror_rate'</span>, <span class="string">'srv_serror_rate'</span>, <span class="string">'rerror_rate'</span>, <span class="string">'srv_rerror_rate'</span>, <span class="string">'same_srv_rate'</span>, <span class="string">'diff_srv_rate'</span>, <span class="string">'srv_diff_host_rate'</span>]])</span><br><span class="line">model4 = KMeans(n_clusters=<span class="number">10</span>).fit(kdd_data_comb.loc[:,[<span class="string">'dst_host_count'</span>, <span class="string">'dst_host_srv_count'</span>, <span class="string">'dst_host_same_srv_rate'</span>, <span class="string">'dst_host_diff_srv_rate'</span>, <span class="string">'dst_host_same_src_port_rate'</span>, <span class="string">'dst_host_srv_diff_host_rate'</span>, <span class="string">'dst_host_serror_rate'</span>, <span class="string">'dst_host_srv_serror_rate'</span>, <span class="string">'dst_host_rerror_rate'</span>, <span class="string">'dst_host_srv_rerror_rate'</span>]])</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data_kmeansed = pd.DataFrame(&#123;<span class="string">'model1'</span>: model1.labels_, <span class="string">'model2'</span>: model2.labels_, <span class="string">'model3'</span>: model3.labels_, <span class="string">'model4'</span>: model4.labels_&#125;, columns=[<span class="string">'model1'</span>, <span class="string">'model2'</span>, <span class="string">'model3'</span>, <span class="string">'model4'</span>])</span><br></pre></td></tr></table></figure>
@@ -604,6 +604,10 @@ dtype: int64</code></pre><figure class="highlight python"><table><tr><td class="
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/12/02/kdd99/" rel="prev" title="kdd99">
+                kdd99 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -681,7 +685,7 @@ dtype: int64</code></pre><figure class="highlight python"><table><tr><td class="
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
