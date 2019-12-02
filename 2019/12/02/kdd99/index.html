@@ -93,10 +93,12 @@
 <meta property="og:site_name" content="Gale&#39;s Blog">
 <meta property="og:description" content="导入数据集">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-12-02T14:29:57.607Z">
+<meta property="og:image" content="http://yoursite.com/images/output_35_0.png">
+<meta property="og:updated_time" content="2019-12-02T14:31:11.560Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="kdd99">
 <meta name="twitter:description" content="导入数据集">
+<meta name="twitter:image" content="http://yoursite.com/images/output_35_0.png">
 
 
 
@@ -456,7 +458,7 @@ dtype: int64</code></pre><figure class="highlight python"><table><tr><td class="
  0.9968852155677542]</code></pre><p>各个类的检测率的可视化</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x_data = [<span class="string">'Dos'</span>, <span class="string">'probe'</span>, <span class="string">'R2L'</span>, <span class="string">'U2R'</span>, <span class="string">'normal'</span>]</span><br><span class="line">bar_width = <span class="number">0.3</span></span><br><span class="line">plt.bar(x=x_data, height=y_data, label=<span class="string">'检测正确率'</span>, color=<span class="string">'steelblue'</span>, alpha=<span class="number">0.8</span>, width=bar_width)</span><br><span class="line">plt.xticks(x_data)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 
-<p>![output_35_0](/images/output_35_0.png</p>
+<p><img src="/images/output_35_0.png" alt="output_35_0"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix</span><br><span class="line"></span><br><span class="line">data1 = data_kmeansed</span><br><span class="line">kdd_predict = tree_model.predict(data1)</span><br><span class="line">pd.DataFrame(</span><br><span class="line">    confusion_matrix(kdd_target, kdd_predict), </span><br><span class="line">    columns=[<span class="string">'预测Dos'</span>, <span class="string">'预测probe'</span>, <span class="string">'预测R2L'</span>, <span class="string">'预测U2R'</span>, <span class="string">'预测normal'</span>],</span><br><span class="line">    index=[<span class="string">'实际Dos'</span>, <span class="string">'实际probe'</span>, <span class="string">'实际R2L'</span>, <span class="string">'实际U2R'</span>,<span class="string">'实际normal'</span>]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 
 <div>
