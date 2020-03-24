@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="深度学习,入侵检测,PyTorch,">
 
 
 
@@ -86,17 +86,18 @@
 
 
 
-<meta name="description" content="Stay hungry, Stay foolish">
-<meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+<meta name="description" content="PyTorch编程时遇到的问题">
+<meta name="keywords" content="深度学习,入侵检测,PyTorch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CNN_Dective_kdd99">
+<meta property="og:url" content="http://yoursite.com/2020/03/24/CNN-Dective-kdd99/index.html">
 <meta property="og:site_name" content="Gale&#39;s Blog">
-<meta property="og:description" content="Stay hungry, Stay foolish">
+<meta property="og:description" content="PyTorch编程时遇到的问题">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-30T04:48:44.000Z">
+<meta property="og:updated_time" content="2020-03-24T07:46:02.885Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="categories">
-<meta name="twitter:description" content="Stay hungry, Stay foolish">
+<meta name="twitter:title" content="CNN_Dective_kdd99">
+<meta name="twitter:description" content="PyTorch编程时遇到的问题">
 
 
 
@@ -126,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/">
+  <link rel="canonical" href="http://yoursite.com/2020/03/24/CNN-Dective-kdd99/">
 
 
 
 
 
-  <title>categories | Gale's Blog</title>
+  <title>CNN_Dective_kdd99 | Gale's Blog</title>
   
 
 
@@ -248,40 +249,154 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/24/CNN-Dective-kdd99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Gale">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/logo.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Gale's Blog">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">categories</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="category-all-page">
-            <div class="category-all-title">
-                No categories
-            </div>
-            <div class="category-all">
+          <h1 class="post-title" itemprop="name headline">CNN_Dective_kdd99</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
               
-            </div>
-          </div>
-        
-      </div>
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-03-24T14:59:40+08:00">
+                2020-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h1 id="PyTorch编程时遇到的问题"><a href="#PyTorch编程时遇到的问题" class="headerlink" title="PyTorch编程时遇到的问题"></a>PyTorch编程时遇到的问题</h1><a id="more"></a>
+<h2 id="num-workers-0"><a href="#num-workers-0" class="headerlink" title="num_workers=0"></a>num_workers=0</h2><p>在windows中使用PyTorch中的dataloader中num_workers大于0或1就会提示：BrokenPipeError错误，这种是因为PyTorch调用了multiprocessing库。<a href="https://discuss.pytorch.org/t/、brokenpipeerror-errno-32-broken-pipe-when-i-run-cifar10-tutorial-py/6224/3" target="_blank" rel="noopener">参考</a><br>解决方法：</p>
+<ol>
+<li>将num_workers设置为0或1，也就是不使用多进程</li>
+<li>添加<code>if __name__ == &#39;__main__&#39;:</code>这条语句,windows必须要检测<strong>main</strong>(),否则就会出现错误，参考<a href="https://stackoverflow.com/questions/18204782/runtimeerror-on-windows-trying-python-multiprocessing" target="_blank" rel="noopener">错误</a>，但是在jupyter notebook中使用了这条语句，依旧不管用。<h2 id="张量类型需要统一"><a href="#张量类型需要统一" class="headerlink" title="张量类型需要统一"></a>张量类型需要统一</h2>我们在定义张量时，首先dtype设置为普通类型例如：torch.float32,torch.int64,而不是将其设置为CPU tensor或者GPU tensor，并且网络中的参数也需要将其放入当GPU中(如果使用GPU运算的话)。可以使用这条语句net = net.to(device)<h2 id="注意卷积操作的维度"><a href="#注意卷积操作的维度" class="headerlink" title="注意卷积操作的维度"></a>注意卷积操作的维度</h2>在对CNN网络进行训练时，输入数据为维度为(N, C_in, H, W)输入维度为(N, C_out, H_out, W_out)，如果维度对应不上可以使用unsqueeze和squeeze函数对张量进行增维和降维。<h2 id="还有一个问题"><a href="#还有一个问题" class="headerlink" title="还有一个问题"></a>还有一个问题</h2>这个问题比较玄学，我刚开始几次训练时，CNN的识别率一直不动，保持相同的水平，但是在我们测试所有参数类型是否有问题后，并且运行的代码跟之前相比并没有改变什么变量，但是奇怪的时，识别率不仅大幅提高了，而且随着nepochs次数的增加，识别率也在提高，并且每次训练的时间都减少了。</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这次很多编程上的问题，都没有注意，还得加强编程的训练，并且加强Linux的学习，毕竟在windows中不能使用多进程加载速度是真滴慢。</p>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/深度学习/" rel="tag"># 深度学习</a>
+          
+            <a href="/tags/入侵检测/" rel="tag"># 入侵检测</a>
+          
+            <a href="/tags/PyTorch/" rel="tag"># PyTorch</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/02/kdd99/" rel="next" title="<<基于特征分组聚类的异常入侵检测系统研究>>代码复现">
+                <i class="fa fa-chevron-left"></i> <<基于特征分组聚类的异常入侵检测系统研究>>代码复现
+              </基于特征分组聚类的异常入侵检测系统研究></a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -314,8 +429,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -368,6 +492,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PyTorch编程时遇到的问题"><span class="nav-number">1.</span> <span class="nav-text">PyTorch编程时遇到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#num-workers-0"><span class="nav-number">1.1.</span> <span class="nav-text">num_workers=0</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#张量类型需要统一"><span class="nav-number">1.2.</span> <span class="nav-text">张量类型需要统一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意卷积操作的维度"><span class="nav-number">1.3.</span> <span class="nav-text">注意卷积操作的维度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#还有一个问题"><span class="nav-number">1.4.</span> <span class="nav-text">还有一个问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
