@@ -5,46 +5,51 @@
 
 
 
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
   <meta charset="UTF-8">
   <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
   <link rel="icon" type="image/png" href="/img/favicon.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
   <meta name="description" content="Stay hungry, Stay foolish">
   <meta name="author" content="Gale">
-  <meta name="keywords" content>
+  <meta name="keywords" content="">
   <title>&lt;&lt;基于特征分组聚类的异常入侵检测系统研究&gt;&gt;代码复现 - Gale&#39;s Blog</title>
 
-  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
 
-  <link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css">
-  <link rel="stylesheet" href="/lib/hint/hint.min.css">
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
 
   
     
-    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github.min.css">
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github.min.css" />
   
 
   
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
+
 <link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_6peoq002giu.css">
+
+
 
 <link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
 
-<link rel="stylesheet" href="/css/main.css">
+
+<link  rel="stylesheet" href="/css/main.css" />
 
 <!-- 自定义样式保持在最底部 -->
 
 
-  <script src="/js/utils.js"></script>
-  <script src="/js/color-schema.js"></script>
-<link rel="alternate" href="/atom.xml" title="Gale's Blog" type="application/atom+xml">
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.0.2"><link rel="alternate" href="/atom.xml" title="Gale's Blog" type="application/atom+xml">
 </head>
 
 
@@ -155,7 +160,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.6k 字
+      2.2k 字
     </span>
   
 
@@ -165,7 +170,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      27
+      38
        分钟
     </span>
   
@@ -202,8 +207,8 @@
 
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
 <span class="hljs-keyword">from</span> sklearn.cluster <span class="hljs-keyword">import</span> KMeans
-columns_names = [<span class="hljs-string">'duration'</span>, <span class="hljs-string">'protocol_type'</span>, <span class="hljs-string">'service'</span>, <span class="hljs-string">'flag'</span>, <span class="hljs-string">'src_bytes'</span>, <span class="hljs-string">'dst_bytes'</span>, <span class="hljs-string">'land'</span>, <span class="hljs-string">'wrong_fragment'</span>, <span class="hljs-string">'urgent'</span>, <span class="hljs-string">'hot'</span>, <span class="hljs-string">'num_failed_logins'</span>, <span class="hljs-string">'logged_in'</span>, <span class="hljs-string">'num_compromised'</span>, <span class="hljs-string">'root_shell'</span>, <span class="hljs-string">'su_attempted'</span>, <span class="hljs-string">'num_root'</span>, <span class="hljs-string">'num_file_creations'</span>, <span class="hljs-string">'num_shells'</span>, <span class="hljs-string">'num_access_files'</span>, <span class="hljs-string">'num_outbound_cmds'</span>, <span class="hljs-string">'is_host_login'</span>, <span class="hljs-string">'is_guest_login'</span>, <span class="hljs-string">'count'</span>, <span class="hljs-string">'srv_count'</span>, <span class="hljs-string">'serror_rate'</span>, <span class="hljs-string">'srv_serror_rate'</span>, <span class="hljs-string">'rerror_rate'</span>, <span class="hljs-string">'srv_rerror_rate'</span>, <span class="hljs-string">'same_srv_rate'</span>, <span class="hljs-string">'diff_srv_rate'</span>, <span class="hljs-string">'srv_diff_host_rate'</span>, <span class="hljs-string">'dst_host_count'</span>, <span class="hljs-string">'dst_host_srv_count'</span>, <span class="hljs-string">'dst_host_same_srv_rate'</span>, <span class="hljs-string">'dst_host_diff_srv_rate'</span>, <span class="hljs-string">'dst_host_same_src_port_rate'</span>, <span class="hljs-string">'dst_host_srv_diff_host_rate'</span>, <span class="hljs-string">'dst_host_serror_rate'</span>, <span class="hljs-string">'dst_host_srv_serror_rate'</span>, <span class="hljs-string">'dst_host_rerror_rate'</span>, <span class="hljs-string">'dst_host_srv_rerror_rate'</span>,<span class="hljs-string">'result'</span>]
-df = pd.read_csv(<span class="hljs-string">'./Sets/kddcup.data_10_percent/kddcup_10_percent.csv'</span>, names=columns_names)
+columns_names = [<span class="hljs-string">&#x27;duration&#x27;</span>, <span class="hljs-string">&#x27;protocol_type&#x27;</span>, <span class="hljs-string">&#x27;service&#x27;</span>, <span class="hljs-string">&#x27;flag&#x27;</span>, <span class="hljs-string">&#x27;src_bytes&#x27;</span>, <span class="hljs-string">&#x27;dst_bytes&#x27;</span>, <span class="hljs-string">&#x27;land&#x27;</span>, <span class="hljs-string">&#x27;wrong_fragment&#x27;</span>, <span class="hljs-string">&#x27;urgent&#x27;</span>, <span class="hljs-string">&#x27;hot&#x27;</span>, <span class="hljs-string">&#x27;num_failed_logins&#x27;</span>, <span class="hljs-string">&#x27;logged_in&#x27;</span>, <span class="hljs-string">&#x27;num_compromised&#x27;</span>, <span class="hljs-string">&#x27;root_shell&#x27;</span>, <span class="hljs-string">&#x27;su_attempted&#x27;</span>, <span class="hljs-string">&#x27;num_root&#x27;</span>, <span class="hljs-string">&#x27;num_file_creations&#x27;</span>, <span class="hljs-string">&#x27;num_shells&#x27;</span>, <span class="hljs-string">&#x27;num_access_files&#x27;</span>, <span class="hljs-string">&#x27;num_outbound_cmds&#x27;</span>, <span class="hljs-string">&#x27;is_host_login&#x27;</span>, <span class="hljs-string">&#x27;is_guest_login&#x27;</span>, <span class="hljs-string">&#x27;count&#x27;</span>, <span class="hljs-string">&#x27;srv_count&#x27;</span>, <span class="hljs-string">&#x27;serror_rate&#x27;</span>, <span class="hljs-string">&#x27;srv_serror_rate&#x27;</span>, <span class="hljs-string">&#x27;rerror_rate&#x27;</span>, <span class="hljs-string">&#x27;srv_rerror_rate&#x27;</span>, <span class="hljs-string">&#x27;same_srv_rate&#x27;</span>, <span class="hljs-string">&#x27;diff_srv_rate&#x27;</span>, <span class="hljs-string">&#x27;srv_diff_host_rate&#x27;</span>, <span class="hljs-string">&#x27;dst_host_count&#x27;</span>, <span class="hljs-string">&#x27;dst_host_srv_count&#x27;</span>, <span class="hljs-string">&#x27;dst_host_same_srv_rate&#x27;</span>, <span class="hljs-string">&#x27;dst_host_diff_srv_rate&#x27;</span>, <span class="hljs-string">&#x27;dst_host_same_src_port_rate&#x27;</span>, <span class="hljs-string">&#x27;dst_host_srv_diff_host_rate&#x27;</span>, <span class="hljs-string">&#x27;dst_host_serror_rate&#x27;</span>, <span class="hljs-string">&#x27;dst_host_srv_serror_rate&#x27;</span>, <span class="hljs-string">&#x27;dst_host_rerror_rate&#x27;</span>, <span class="hljs-string">&#x27;dst_host_srv_rerror_rate&#x27;</span>,<span class="hljs-string">&#x27;result&#x27;</span>]
+df = pd.read_csv(<span class="hljs-string">&#x27;./Sets/kddcup.data_10_percent/kddcup_10_percent.csv&#x27;</span>, names=columns_names)
 <span class="hljs-comment">#print(df.iloc[:,0:4])</span>
 kdd_data = df.iloc[:,:<span class="hljs-number">-1</span>]   <span class="hljs-comment"># 保存无标签数据集</span>
 kdd_target = df.iloc[:,<span class="hljs-number">-1</span>] <span class="hljs-comment"># 保存标签列</span></code></pre>
@@ -260,39 +265,48 @@ print(kdd_target.head())</code></pre>
 2    normal.
 3    normal.
 4    normal.
-Name: result, dtype: object</code></pre><h1 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h1><p>1.将类型为：string的列用one-hot编码数值化<br>2.将编码后的数据，再合并到原来的数据中，并且删除原本数据类型为string的列的数据<br>3.再使用最大最小化归一化</p>
-<h2 id="ont-hot编码"><a href="#ont-hot编码" class="headerlink" title="ont-hot编码"></a>ont-hot编码</h2><pre><code class="hljs python">data = pd.get_dummies(df[[<span class="hljs-string">'protocol_type'</span>, <span class="hljs-string">'service'</span>, <span class="hljs-string">'flag'</span>]])
+Name: result, dtype: object</code></pre>
+<h1 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h1><p>1.将类型为：string的列用one-hot编码数值化<br>2.将编码后的数据，再合并到原来的数据中，并且删除原本数据类型为string的列的数据<br>3.再使用最大最小化归一化</p>
+<h2 id="ont-hot编码"><a href="#ont-hot编码" class="headerlink" title="ont-hot编码"></a>ont-hot编码</h2><pre><code class="hljs python">data = pd.get_dummies(df[[<span class="hljs-string">&#x27;protocol_type&#x27;</span>, <span class="hljs-string">&#x27;service&#x27;</span>, <span class="hljs-string">&#x27;flag&#x27;</span>]])
 print(len(data.columns))
 print(len(df.columns))</code></pre>
 
 <pre><code>80
-42</code></pre><h2 id="合并数值化后的数据，删除原来string类型的数据"><a href="#合并数值化后的数据，删除原来string类型的数据" class="headerlink" title="合并数值化后的数据，删除原来string类型的数据"></a>合并数值化后的数据，删除原来string类型的数据</h2><pre><code class="hljs python">kdd_data_comb = pd.merge(kdd_data, data, how=<span class="hljs-string">'outer'</span>, left_index=<span class="hljs-literal">True</span>, right_index=<span class="hljs-literal">True</span>)
+42</code></pre>
+<h2 id="合并数值化后的数据，删除原来string类型的数据"><a href="#合并数值化后的数据，删除原来string类型的数据" class="headerlink" title="合并数值化后的数据，删除原来string类型的数据"></a>合并数值化后的数据，删除原来string类型的数据</h2><pre><code class="hljs python">kdd_data_comb = pd.merge(kdd_data, data, how=<span class="hljs-string">&#x27;outer&#x27;</span>, left_index=<span class="hljs-literal">True</span>, right_index=<span class="hljs-literal">True</span>)
 print(kdd_data_comb.shape)
 <span class="hljs-comment"># print(list(kdd_data_comb.columns))</span>
 <span class="hljs-comment"># print(list(kdd_data.columns))</span>
 <span class="hljs-comment"># print(kdd_data.head())</span>
-kdd_data_comb = kdd_data_comb.drop(columns=[<span class="hljs-string">'protocol_type'</span>, <span class="hljs-string">'service'</span>, <span class="hljs-string">'flag'</span>])</code></pre>
+kdd_data_comb = kdd_data_comb.drop(columns=[<span class="hljs-string">&#x27;protocol_type&#x27;</span>, <span class="hljs-string">&#x27;service&#x27;</span>, <span class="hljs-string">&#x27;flag&#x27;</span>])</code></pre>
 
-<pre><code>(494021, 121)</code></pre><h2 id="数据归一化"><a href="#数据归一化" class="headerlink" title="数据归一化"></a>数据归一化</h2><pre><code class="hljs python"><span class="hljs-keyword">from</span> sklearn.preprocessing <span class="hljs-keyword">import</span> MinMaxScaler
+<pre><code>(494021, 121)</code></pre>
+<h2 id="数据归一化"><a href="#数据归一化" class="headerlink" title="数据归一化"></a>数据归一化</h2><pre><code class="hljs python"><span class="hljs-keyword">from</span> sklearn.preprocessing <span class="hljs-keyword">import</span> MinMaxScaler
 
 scale = MinMaxScaler().fit(kdd_data_comb)
 kdd_dataScale = scale.transform(kdd_data_comb)</code></pre>
 
 <h1 id="KMeans降维"><a href="#KMeans降维" class="headerlink" title="KMeans降维"></a>KMeans降维</h1><p>这里将数据按照论文中的方式，将数据集划分为4组，然后对每一组作Kmeans聚类</p>
-<pre><code class="hljs python">model1 = KMeans(n_clusters=<span class="hljs-number">10</span>).fit(kdd_data_comb.loc[:,[<span class="hljs-string">'duration'</span>, <span class="hljs-string">'protocol_type_icmp'</span>, <span class="hljs-string">'protocol_type_tcp'</span>, <span class="hljs-string">'protocol_type_udp'</span>, <span class="hljs-string">'service_IRC'</span>, <span class="hljs-string">'service_X11'</span>, <span class="hljs-string">'service_Z39_50'</span>, <span class="hljs-string">'service_auth'</span>, <span class="hljs-string">'service_bgp'</span>, <span class="hljs-string">'service_courier'</span>, <span class="hljs-string">'service_csnet_ns'</span>, <span class="hljs-string">'service_ctf'</span>, <span class="hljs-string">'service_daytime'</span>, <span class="hljs-string">'service_discard'</span>, <span class="hljs-string">'service_domain'</span>, <span class="hljs-string">'service_domain_u'</span>, <span class="hljs-string">'service_echo'</span>, <span class="hljs-string">'service_eco_i'</span>, <span class="hljs-string">'service_ecr_i'</span>, <span class="hljs-string">'service_efs'</span>, <span class="hljs-string">'service_exec'</span>, <span class="hljs-string">'service_finger'</span>, <span class="hljs-string">'service_ftp'</span>, <span class="hljs-string">'service_ftp_data'</span>, <span class="hljs-string">'service_gopher'</span>, <span class="hljs-string">'service_hostnames'</span>, <span class="hljs-string">'service_http'</span>, <span class="hljs-string">'service_http_443'</span>, <span class="hljs-string">'service_imap4'</span>, <span class="hljs-string">'service_iso_tsap'</span>, <span class="hljs-string">'service_klogin'</span>, <span class="hljs-string">'service_kshell'</span>, <span class="hljs-string">'service_ldap'</span>, <span class="hljs-string">'service_link'</span>, <span class="hljs-string">'service_login'</span>, <span class="hljs-string">'service_mtp'</span>, <span class="hljs-string">'service_name'</span>, <span class="hljs-string">'service_netbios_dgm'</span>, <span class="hljs-string">'service_netbios_ns'</span>, <span class="hljs-string">'service_netbios_ssn'</span>, <span class="hljs-string">'service_netstat'</span>, <span class="hljs-string">'service_nnsp'</span>, <span class="hljs-string">'service_nntp'</span>, <span class="hljs-string">'service_ntp_u'</span>, <span class="hljs-string">'service_other'</span>, <span class="hljs-string">'service_pm_dump'</span>, <span class="hljs-string">'service_pop_2'</span>, <span class="hljs-string">'service_pop_3'</span>, <span class="hljs-string">'service_printer'</span>, <span class="hljs-string">'service_private'</span>, <span class="hljs-string">'service_red_i'</span>, <span class="hljs-string">'service_remote_job'</span>, <span class="hljs-string">'service_rje'</span>, <span class="hljs-string">'service_shell'</span>, <span class="hljs-string">'service_smtp'</span>, <span class="hljs-string">'service_sql_net'</span>, <span class="hljs-string">'service_ssh'</span>, <span class="hljs-string">'service_sunrpc'</span>, <span class="hljs-string">'service_supdup'</span>, <span class="hljs-string">'service_systat'</span>, <span class="hljs-string">'service_telnet'</span>, <span class="hljs-string">'service_tftp_u'</span>, <span class="hljs-string">'service_tim_i'</span>, <span class="hljs-string">'service_time'</span>, <span class="hljs-string">'service_urh_i'</span>, <span class="hljs-string">'service_urp_i'</span>, <span class="hljs-string">'service_uucp'</span>, <span class="hljs-string">'service_uucp_path'</span>, <span class="hljs-string">'service_vmnet'</span>, <span class="hljs-string">'service_whois'</span>, <span class="hljs-string">'flag_OTH'</span>, <span class="hljs-string">'flag_REJ'</span>, <span class="hljs-string">'flag_RSTO'</span>, <span class="hljs-string">'flag_RSTOS0'</span>, <span class="hljs-string">'flag_RSTR'</span>, <span class="hljs-string">'flag_S0'</span>, <span class="hljs-string">'flag_S1'</span>, <span class="hljs-string">'flag_S2'</span>, <span class="hljs-string">'flag_S3'</span>, <span class="hljs-string">'flag_SF'</span>, <span class="hljs-string">'flag_SH'</span>, <span class="hljs-string">'src_bytes'</span>, <span class="hljs-string">'dst_bytes'</span>, <span class="hljs-string">'land'</span>, <span class="hljs-string">'wrong_fragment'</span>, <span class="hljs-string">'urgent'</span>]])
-model2 = KMeans(n_clusters=<span class="hljs-number">10</span>).fit(kdd_data_comb.loc[:,[<span class="hljs-string">'hot'</span>, <span class="hljs-string">'num_failed_logins'</span>, <span class="hljs-string">'logged_in'</span>, <span class="hljs-string">'num_compromised'</span>, <span class="hljs-string">'root_shell'</span>, <span class="hljs-string">'su_attempted'</span>, <span class="hljs-string">'num_root'</span>, <span class="hljs-string">'num_file_creations'</span>, <span class="hljs-string">'num_shells'</span>, <span class="hljs-string">'num_access_files'</span>, <span class="hljs-string">'num_outbound_cmds'</span>, <span class="hljs-string">'is_host_login'</span>, <span class="hljs-string">'is_guest_login'</span>]])
-model3 = KMeans(n_clusters=<span class="hljs-number">10</span>).fit(kdd_data_comb.loc[:,[<span class="hljs-string">'count'</span>, <span class="hljs-string">'srv_count'</span>, <span class="hljs-string">'serror_rate'</span>, <span class="hljs-string">'srv_serror_rate'</span>, <span class="hljs-string">'rerror_rate'</span>, <span class="hljs-string">'srv_rerror_rate'</span>, <span class="hljs-string">'same_srv_rate'</span>, <span class="hljs-string">'diff_srv_rate'</span>, <span class="hljs-string">'srv_diff_host_rate'</span>]])
-model4 = KMeans(n_clusters=<span class="hljs-number">10</span>).fit(kdd_data_comb.loc[:,[<span class="hljs-string">'dst_host_count'</span>, <span class="hljs-string">'dst_host_srv_count'</span>, <span class="hljs-string">'dst_host_same_srv_rate'</span>, <span class="hljs-string">'dst_host_diff_srv_rate'</span>, <span class="hljs-string">'dst_host_same_src_port_rate'</span>, <span class="hljs-string">'dst_host_srv_diff_host_rate'</span>, <span class="hljs-string">'dst_host_serror_rate'</span>, <span class="hljs-string">'dst_host_srv_serror_rate'</span>, <span class="hljs-string">'dst_host_rerror_rate'</span>, <span class="hljs-string">'dst_host_srv_rerror_rate'</span>]])</code></pre>
+<pre><code class="hljs python">model1 = KMeans(n_clusters=<span class="hljs-number">10</span>).fit(kdd_data_comb.loc[:,[<span class="hljs-string">&#x27;duration&#x27;</span>, <span class="hljs-string">&#x27;protocol_type_icmp&#x27;</span>, <span class="hljs-string">&#x27;protocol_type_tcp&#x27;</span>, <span class="hljs-string">&#x27;protocol_type_udp&#x27;</span>, <span class="hljs-string">&#x27;service_IRC&#x27;</span>, <span class="hljs-string">&#x27;service_X11&#x27;</span>, <span class="hljs-string">&#x27;service_Z39_50&#x27;</span>, <span class="hljs-string">&#x27;service_auth&#x27;</span>, <span class="hljs-string">&#x27;service_bgp&#x27;</span>, <span class="hljs-string">&#x27;service_courier&#x27;</span>, <span class="hljs-string">&#x27;service_csnet_ns&#x27;</span>, <span class="hljs-string">&#x27;service_ctf&#x27;</span>, <span class="hljs-string">&#x27;service_daytime&#x27;</span>, <span class="hljs-string">&#x27;service_discard&#x27;</span>, <span class="hljs-string">&#x27;service_domain&#x27;</span>, <span class="hljs-string">&#x27;service_domain_u&#x27;</span>, <span class="hljs-string">&#x27;service_echo&#x27;</span>, <span class="hljs-string">&#x27;service_eco_i&#x27;</span>, <span class="hljs-string">&#x27;service_ecr_i&#x27;</span>, <span class="hljs-string">&#x27;service_efs&#x27;</span>, <span class="hljs-string">&#x27;service_exec&#x27;</span>, <span class="hljs-string">&#x27;service_finger&#x27;</span>, <span class="hljs-string">&#x27;service_ftp&#x27;</span>, <span class="hljs-string">&#x27;service_ftp_data&#x27;</span>, <span class="hljs-string">&#x27;service_gopher&#x27;</span>, <span class="hljs-string">&#x27;service_hostnames&#x27;</span>, <span class="hljs-string">&#x27;service_http&#x27;</span>, <span class="hljs-string">&#x27;service_http_443&#x27;</span>, <span class="hljs-string">&#x27;service_imap4&#x27;</span>, <span class="hljs-string">&#x27;service_iso_tsap&#x27;</span>, <span class="hljs-string">&#x27;service_klogin&#x27;</span>, <span class="hljs-string">&#x27;service_kshell&#x27;</span>, <span class="hljs-string">&#x27;service_ldap&#x27;</span>, <span class="hljs-string">&#x27;service_link&#x27;</span>, <span class="hljs-string">&#x27;service_login&#x27;</span>, <span class="hljs-string">&#x27;service_mtp&#x27;</span>, <span class="hljs-string">&#x27;service_name&#x27;</span>, <span class="hljs-string">&#x27;service_netbios_dgm&#x27;</span>, <span class="hljs-string">&#x27;service_netbios_ns&#x27;</span>, <span class="hljs-string">&#x27;service_netbios_ssn&#x27;</span>, <span class="hljs-string">&#x27;service_netstat&#x27;</span>, <span class="hljs-string">&#x27;service_nnsp&#x27;</span>, <span class="hljs-string">&#x27;service_nntp&#x27;</span>, <span class="hljs-string">&#x27;service_ntp_u&#x27;</span>, <span class="hljs-string">&#x27;service_other&#x27;</span>, <span class="hljs-string">&#x27;service_pm_dump&#x27;</span>, <span class="hljs-string">&#x27;service_pop_2&#x27;</span>, <span class="hljs-string">&#x27;service_pop_3&#x27;</span>, <span class="hljs-string">&#x27;service_printer&#x27;</span>, <span class="hljs-string">&#x27;service_private&#x27;</span>, <span class="hljs-string">&#x27;service_red_i&#x27;</span>, <span class="hljs-string">&#x27;service_remote_job&#x27;</span>, <span class="hljs-string">&#x27;service_rje&#x27;</span>, <span class="hljs-string">&#x27;service_shell&#x27;</span>, <span class="hljs-string">&#x27;service_smtp&#x27;</span>, <span class="hljs-string">&#x27;service_sql_net&#x27;</span>, <span class="hljs-string">&#x27;service_ssh&#x27;</span>, <span class="hljs-string">&#x27;service_sunrpc&#x27;</span>, <span class="hljs-string">&#x27;service_supdup&#x27;</span>, <span class="hljs-string">&#x27;service_systat&#x27;</span>, <span class="hljs-string">&#x27;service_telnet&#x27;</span>, <span class="hljs-string">&#x27;service_tftp_u&#x27;</span>, <span class="hljs-string">&#x27;service_tim_i&#x27;</span>, <span class="hljs-string">&#x27;service_time&#x27;</span>, <span class="hljs-string">&#x27;service_urh_i&#x27;</span>, <span class="hljs-string">&#x27;service_urp_i&#x27;</span>, <span class="hljs-string">&#x27;service_uucp&#x27;</span>, <span class="hljs-string">&#x27;service_uucp_path&#x27;</span>, <span class="hljs-string">&#x27;service_vmnet&#x27;</span>, <span class="hljs-string">&#x27;service_whois&#x27;</span>, <span class="hljs-string">&#x27;flag_OTH&#x27;</span>, <span class="hljs-string">&#x27;flag_REJ&#x27;</span>, <span class="hljs-string">&#x27;flag_RSTO&#x27;</span>, <span class="hljs-string">&#x27;flag_RSTOS0&#x27;</span>, <span class="hljs-string">&#x27;flag_RSTR&#x27;</span>, <span class="hljs-string">&#x27;flag_S0&#x27;</span>, <span class="hljs-string">&#x27;flag_S1&#x27;</span>, <span class="hljs-string">&#x27;flag_S2&#x27;</span>, <span class="hljs-string">&#x27;flag_S3&#x27;</span>, <span class="hljs-string">&#x27;flag_SF&#x27;</span>, <span class="hljs-string">&#x27;flag_SH&#x27;</span>, <span class="hljs-string">&#x27;src_bytes&#x27;</span>, <span class="hljs-string">&#x27;dst_bytes&#x27;</span>, <span class="hljs-string">&#x27;land&#x27;</span>, <span class="hljs-string">&#x27;wrong_fragment&#x27;</span>, <span class="hljs-string">&#x27;urgent&#x27;</span>]])
+model2 = KMeans(n_clusters=<span class="hljs-number">10</span>).fit(kdd_data_comb.loc[:,[<span class="hljs-string">&#x27;hot&#x27;</span>, <span class="hljs-string">&#x27;num_failed_logins&#x27;</span>, <span class="hljs-string">&#x27;logged_in&#x27;</span>, <span class="hljs-string">&#x27;num_compromised&#x27;</span>, <span class="hljs-string">&#x27;root_shell&#x27;</span>, <span class="hljs-string">&#x27;su_attempted&#x27;</span>, <span class="hljs-string">&#x27;num_root&#x27;</span>, <span class="hljs-string">&#x27;num_file_creations&#x27;</span>, <span class="hljs-string">&#x27;num_shells&#x27;</span>, <span class="hljs-string">&#x27;num_access_files&#x27;</span>, <span class="hljs-string">&#x27;num_outbound_cmds&#x27;</span>, <span class="hljs-string">&#x27;is_host_login&#x27;</span>, <span class="hljs-string">&#x27;is_guest_login&#x27;</span>]])
+model3 = KMeans(n_clusters=<span class="hljs-number">10</span>).fit(kdd_data_comb.loc[:,[<span class="hljs-string">&#x27;count&#x27;</span>, <span class="hljs-string">&#x27;srv_count&#x27;</span>, <span class="hljs-string">&#x27;serror_rate&#x27;</span>, <span class="hljs-string">&#x27;srv_serror_rate&#x27;</span>, <span class="hljs-string">&#x27;rerror_rate&#x27;</span>, <span class="hljs-string">&#x27;srv_rerror_rate&#x27;</span>, <span class="hljs-string">&#x27;same_srv_rate&#x27;</span>, <span class="hljs-string">&#x27;diff_srv_rate&#x27;</span>, <span class="hljs-string">&#x27;srv_diff_host_rate&#x27;</span>]])
+model4 = KMeans(n_clusters=<span class="hljs-number">10</span>).fit(kdd_data_comb.loc[:,[<span class="hljs-string">&#x27;dst_host_count&#x27;</span>, <span class="hljs-string">&#x27;dst_host_srv_count&#x27;</span>, <span class="hljs-string">&#x27;dst_host_same_srv_rate&#x27;</span>, <span class="hljs-string">&#x27;dst_host_diff_srv_rate&#x27;</span>, <span class="hljs-string">&#x27;dst_host_same_src_port_rate&#x27;</span>, <span class="hljs-string">&#x27;dst_host_srv_diff_host_rate&#x27;</span>, <span class="hljs-string">&#x27;dst_host_serror_rate&#x27;</span>, <span class="hljs-string">&#x27;dst_host_srv_serror_rate&#x27;</span>, <span class="hljs-string">&#x27;dst_host_rerror_rate&#x27;</span>, <span class="hljs-string">&#x27;dst_host_srv_rerror_rate&#x27;</span>]])</code></pre>
+
 
 <pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
 np.unique(model1.labels_) <span class="hljs-comment"># 这里显示聚类结果中所有的值，如果只是打印出来，看不到除0以外的其他值</span></code></pre>
 
-<pre><code>array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])</code></pre><pre><code class="hljs python">sizes = [(model1.labels_ == i).sum() <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">10</span>) ] <span class="hljs-comment">#每块值</span>
+
+
+
+<pre><code>array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])</code></pre>
+<pre><code class="hljs python">sizes = [(model1.labels_ == i).sum() <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">10</span>) ] <span class="hljs-comment">#每块值</span>
 print(sizes)
 print(len(model1.labels_))</code></pre>
 
 <pre><code>[491472, 1, 59, 16, 24, 21, 6, 77, 2343, 2]
-494021</code></pre><pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+494021</code></pre>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
 plt.figure(figsize=(<span class="hljs-number">6</span>,<span class="hljs-number">9</span>)) <span class="hljs-comment">#调节图形大小</span>
 labels = [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>] <span class="hljs-comment">#定义标签</span>
 <span class="hljs-comment"># sizes = [i for i in range(10): model1.labels_ == i] #每块值</span>
@@ -300,17 +314,19 @@ explode = (<span class="hljs-number">0</span>,<span class="hljs-number">0</span>
 patches,text1,text2 = plt.pie(sizes,
                       explode=explode,
                       labels=labels,
-                      autopct = <span class="hljs-string">'%3.2f%%'</span>, <span class="hljs-comment">#数值保留固定小数位</span>
+                      autopct = <span class="hljs-string">&#x27;%3.2f%%&#x27;</span>, <span class="hljs-comment">#数值保留固定小数位</span>
                       shadow = <span class="hljs-literal">False</span>, <span class="hljs-comment">#无阴影设置</span>
                       startangle =<span class="hljs-number">90</span>, <span class="hljs-comment">#逆时针起始角度设置</span>
                       pctdistance = <span class="hljs-number">0.6</span>) <span class="hljs-comment">#数值距圆心半径倍数距离</span>
 <span class="hljs-comment">#patches饼图的返回值，texts1饼图外label的文本，texts2饼图内部的文本</span>
 <span class="hljs-comment"># x，y轴刻度设置一致，保证饼图为圆形</span>
-plt.axis(<span class="hljs-string">'equal'</span>)
+plt.axis(<span class="hljs-string">&#x27;equal&#x27;</span>)
 plt.show()</code></pre>
 
-<pre><code>&lt;Figure size 600x900 with 1 Axes&gt;</code></pre><h2 id="合并降维后的数据"><a href="#合并降维后的数据" class="headerlink" title="合并降维后的数据"></a>合并降维后的数据</h2><p>可以看到数据经过kmeans降维后，数据集就变成了只有4维的数据了</p>
-<pre><code class="hljs python">data_kmeansed = pd.DataFrame(&#123;<span class="hljs-string">'model1'</span>: model1.labels_, <span class="hljs-string">'model2'</span>: model2.labels_, <span class="hljs-string">'model3'</span>: model3.labels_, <span class="hljs-string">'model4'</span>: model4.labels_&#125;, columns=[<span class="hljs-string">'model1'</span>, <span class="hljs-string">'model2'</span>, <span class="hljs-string">'model3'</span>, <span class="hljs-string">'model4'</span>])
+
+<pre><code>&lt;Figure size 600x900 with 1 Axes&gt;</code></pre>
+<h2 id="合并降维后的数据"><a href="#合并降维后的数据" class="headerlink" title="合并降维后的数据"></a>合并降维后的数据</h2><p>可以看到数据经过kmeans降维后，数据集就变成了只有4维的数据了</p>
+<pre><code class="hljs python">data_kmeansed = pd.DataFrame(&#123;<span class="hljs-string">&#x27;model1&#x27;</span>: model1.labels_, <span class="hljs-string">&#x27;model2&#x27;</span>: model2.labels_, <span class="hljs-string">&#x27;model3&#x27;</span>: model3.labels_, <span class="hljs-string">&#x27;model4&#x27;</span>: model4.labels_&#125;, columns=[<span class="hljs-string">&#x27;model1&#x27;</span>, <span class="hljs-string">&#x27;model2&#x27;</span>, <span class="hljs-string">&#x27;model3&#x27;</span>, <span class="hljs-string">&#x27;model4&#x27;</span>])
 print(data_kmeansed.head())
 print(data_kmeansed.shape)</code></pre>
 
@@ -320,69 +336,91 @@ print(data_kmeansed.shape)</code></pre>
 2       0       4       2       3
 3       0       4       2       3
 4       0       4       2       3
-(494021, 4)</code></pre><pre><code class="hljs python"><span class="hljs-comment"># data_kmeansed_onehot = pd.get_dummies(data_kmeansed[['model1', 'model2', 'model3', 'model4']])</span>
-<span class="hljs-comment"># print(pd.get_dummies(data_kmeansed[['model1', 'model2', 'model3', 'model4']]).head()) # 可以看到这里对数据值数据进行one-hot编码数值不变</span></code></pre>
+(494021, 4)</code></pre>
+<pre><code class="hljs python"><span class="hljs-comment"># data_kmeansed_onehot = pd.get_dummies(data_kmeansed[[&#x27;model1&#x27;, &#x27;model2&#x27;, &#x27;model3&#x27;, &#x27;model4&#x27;]])</span>
+<span class="hljs-comment"># print(pd.get_dummies(data_kmeansed[[&#x27;model1&#x27;, &#x27;model2&#x27;, &#x27;model3&#x27;, &#x27;model4&#x27;]]).head()) # 可以看到这里对数据值数据进行one-hot编码数值不变</span></code></pre>
 
 <h2 id="标签处理"><a href="#标签处理" class="headerlink" title="标签处理"></a>标签处理</h2><p>该模型只对5种大类型的攻击方式进行预测，但是数据集中原标签全是小类型，需要将小类型的标签，根据攻击方式的不同划分到大类型中</p>
 <pre><code class="hljs python">np.unique(kdd_target) <span class="hljs-comment"># 显示当前标签中的值</span></code></pre>
 
-<pre><code>array([&apos;back.&apos;, &apos;buffer_overflow.&apos;, &apos;ftp_write.&apos;, &apos;guess_passwd.&apos;,
-       &apos;imap.&apos;, &apos;ipsweep.&apos;, &apos;land.&apos;, &apos;loadmodule.&apos;, &apos;multihop.&apos;,
-       &apos;neptune.&apos;, &apos;nmap.&apos;, &apos;normal.&apos;, &apos;perl.&apos;, &apos;phf.&apos;, &apos;pod.&apos;,
-       &apos;portsweep.&apos;, &apos;rootkit.&apos;, &apos;satan.&apos;, &apos;smurf.&apos;, &apos;spy.&apos;, &apos;teardrop.&apos;,
-       &apos;warezclient.&apos;, &apos;warezmaster.&apos;], dtype=object)</code></pre><pre><code class="hljs python">kdd_target_test = kdd_target.copy(<span class="hljs-literal">True</span>) <span class="hljs-comment"># 深度复制</span></code></pre>
+
+
+
+<pre><code>array([&#39;back.&#39;, &#39;buffer_overflow.&#39;, &#39;ftp_write.&#39;, &#39;guess_passwd.&#39;,
+       &#39;imap.&#39;, &#39;ipsweep.&#39;, &#39;land.&#39;, &#39;loadmodule.&#39;, &#39;multihop.&#39;,
+       &#39;neptune.&#39;, &#39;nmap.&#39;, &#39;normal.&#39;, &#39;perl.&#39;, &#39;phf.&#39;, &#39;pod.&#39;,
+       &#39;portsweep.&#39;, &#39;rootkit.&#39;, &#39;satan.&#39;, &#39;smurf.&#39;, &#39;spy.&#39;, &#39;teardrop.&#39;,
+       &#39;warezclient.&#39;, &#39;warezmaster.&#39;], dtype=object)</code></pre>
+<pre><code class="hljs python">kdd_target_test = kdd_target.copy(<span class="hljs-literal">True</span>) <span class="hljs-comment"># 深度复制</span></code></pre>
+
 
 <pre><code class="hljs python"><span class="hljs-comment"># 做个映射将标签中的小类，按照先验知识划分为5个大类</span></code></pre>
 
-<pre><code class="hljs python"><span class="hljs-comment"># print(kdd_target_test[kdd_target_test=='Dos'].head())</span>
+
+<pre><code class="hljs python"><span class="hljs-comment"># print(kdd_target_test[kdd_target_test==&#x27;Dos&#x27;].head())</span>
 print(np.unique(kdd_target))</code></pre>
 
-<pre><code>[&apos;Dos&apos; &apos;R2L&apos; &apos;U2R&apos; &apos;normal&apos; &apos;probe&apos;]</code></pre><p>替换</p>
-<pre><code class="hljs python">Dos_target = &#123;<span class="hljs-string">'back.'</span>:<span class="hljs-string">'Dos'</span>, <span class="hljs-string">'neptune.'</span>:<span class="hljs-string">'Dos'</span>, <span class="hljs-string">'pod.'</span>:<span class="hljs-string">'Dos'</span>, <span class="hljs-string">'smurf.'</span>:<span class="hljs-string">'Dos'</span>, <span class="hljs-string">'land.'</span>:<span class="hljs-string">'Dos'</span>, <span class="hljs-string">'teardrop.'</span>:<span class="hljs-string">'Dos'</span>, <span class="hljs-string">'normal.'</span>:<span class="hljs-string">'normal'</span>,<span class="hljs-string">'ipsweep.'</span>:<span class="hljs-string">'probe'</span>, <span class="hljs-string">'nmap.'</span>:<span class="hljs-string">'probe'</span>, <span class="hljs-string">'portsweep.'</span>:<span class="hljs-string">'probe'</span>, <span class="hljs-string">'satan.'</span>:<span class="hljs-string">'probe'</span>, <span class="hljs-string">'ftp_write.'</span>:<span class="hljs-string">'R2L'</span>, <span class="hljs-string">'guess_passwd.'</span>:<span class="hljs-string">'R2L'</span>, <span class="hljs-string">'imap.'</span>:<span class="hljs-string">'R2L'</span>, <span class="hljs-string">'multihop.'</span>:<span class="hljs-string">'R2L'</span>, <span class="hljs-string">'phf.'</span>:<span class="hljs-string">'R2L'</span>, <span class="hljs-string">'spy.'</span>:<span class="hljs-string">'R2L'</span>, <span class="hljs-string">'warezclient.'</span>:<span class="hljs-string">'R2L'</span>, <span class="hljs-string">'warezmaster.'</span>:<span class="hljs-string">'R2L'</span>, <span class="hljs-string">'buffer_overflow.'</span>:<span class="hljs-string">'U2R'</span>, <span class="hljs-string">'loadmodule.'</span>:<span class="hljs-string">'U2R'</span>, <span class="hljs-string">'perl.'</span>:<span class="hljs-string">'U2R'</span>, <span class="hljs-string">'rootkit.'</span>:<span class="hljs-string">'U2R'</span>&#125;
+<pre><code>[&#39;Dos&#39; &#39;R2L&#39; &#39;U2R&#39; &#39;normal&#39; &#39;probe&#39;]</code></pre>
+<p>替换</p>
+<pre><code class="hljs python">Dos_target = &#123;<span class="hljs-string">&#x27;back.&#x27;</span>:<span class="hljs-string">&#x27;Dos&#x27;</span>, <span class="hljs-string">&#x27;neptune.&#x27;</span>:<span class="hljs-string">&#x27;Dos&#x27;</span>, <span class="hljs-string">&#x27;pod.&#x27;</span>:<span class="hljs-string">&#x27;Dos&#x27;</span>, <span class="hljs-string">&#x27;smurf.&#x27;</span>:<span class="hljs-string">&#x27;Dos&#x27;</span>, <span class="hljs-string">&#x27;land.&#x27;</span>:<span class="hljs-string">&#x27;Dos&#x27;</span>, <span class="hljs-string">&#x27;teardrop.&#x27;</span>:<span class="hljs-string">&#x27;Dos&#x27;</span>, <span class="hljs-string">&#x27;normal.&#x27;</span>:<span class="hljs-string">&#x27;normal&#x27;</span>,<span class="hljs-string">&#x27;ipsweep.&#x27;</span>:<span class="hljs-string">&#x27;probe&#x27;</span>, <span class="hljs-string">&#x27;nmap.&#x27;</span>:<span class="hljs-string">&#x27;probe&#x27;</span>, <span class="hljs-string">&#x27;portsweep.&#x27;</span>:<span class="hljs-string">&#x27;probe&#x27;</span>, <span class="hljs-string">&#x27;satan.&#x27;</span>:<span class="hljs-string">&#x27;probe&#x27;</span>, <span class="hljs-string">&#x27;ftp_write.&#x27;</span>:<span class="hljs-string">&#x27;R2L&#x27;</span>, <span class="hljs-string">&#x27;guess_passwd.&#x27;</span>:<span class="hljs-string">&#x27;R2L&#x27;</span>, <span class="hljs-string">&#x27;imap.&#x27;</span>:<span class="hljs-string">&#x27;R2L&#x27;</span>, <span class="hljs-string">&#x27;multihop.&#x27;</span>:<span class="hljs-string">&#x27;R2L&#x27;</span>, <span class="hljs-string">&#x27;phf.&#x27;</span>:<span class="hljs-string">&#x27;R2L&#x27;</span>, <span class="hljs-string">&#x27;spy.&#x27;</span>:<span class="hljs-string">&#x27;R2L&#x27;</span>, <span class="hljs-string">&#x27;warezclient.&#x27;</span>:<span class="hljs-string">&#x27;R2L&#x27;</span>, <span class="hljs-string">&#x27;warezmaster.&#x27;</span>:<span class="hljs-string">&#x27;R2L&#x27;</span>, <span class="hljs-string">&#x27;buffer_overflow.&#x27;</span>:<span class="hljs-string">&#x27;U2R&#x27;</span>, <span class="hljs-string">&#x27;loadmodule.&#x27;</span>:<span class="hljs-string">&#x27;U2R&#x27;</span>, <span class="hljs-string">&#x27;perl.&#x27;</span>:<span class="hljs-string">&#x27;U2R&#x27;</span>, <span class="hljs-string">&#x27;rootkit.&#x27;</span>:<span class="hljs-string">&#x27;U2R&#x27;</span>&#125;
 kdd_target = kdd_target_test.map(Dos_target)</code></pre>
 
 <h1 id="决策树做训练"><a href="#决策树做训练" class="headerlink" title="决策树做训练"></a>决策树做训练</h1><pre><code class="hljs python"><span class="hljs-keyword">from</span> sklearn <span class="hljs-keyword">import</span> tree
-tree_model = tree.DecisionTreeClassifier(criterion=<span class="hljs-string">'entropy'</span>,random_state=<span class="hljs-number">30</span>)<span class="hljs-comment"># criterion='entropy'调用的就是C4.5算法，默认是CART</span>
+tree_model = tree.DecisionTreeClassifier(criterion=<span class="hljs-string">&#x27;entropy&#x27;</span>,random_state=<span class="hljs-number">30</span>)<span class="hljs-comment"># criterion=&#x27;entropy&#x27;调用的就是C4.5算法，默认是CART</span>
 tree_model.fit(data_kmeansed, kdd_target)</code></pre>
 
-<pre><code>DecisionTreeClassifier(class_weight=None, criterion=&apos;entropy&apos;, max_depth=None,
+
+
+
+<pre><code>DecisionTreeClassifier(class_weight=None, criterion=&#39;entropy&#39;, max_depth=None,
                        max_features=None, max_leaf_nodes=None,
                        min_impurity_decrease=0.0, min_impurity_split=None,
                        min_samples_leaf=1, min_samples_split=2,
                        min_weight_fraction_leaf=0.0, presort=False,
-                       random_state=30, splitter=&apos;best&apos;)</code></pre><pre><code class="hljs python"><span class="hljs-comment"># data_kmeansed.isnull().sum()</span></code></pre>
+                       random_state=30, splitter=&#39;best&#39;)</code></pre>
+<pre><code class="hljs python"><span class="hljs-comment"># data_kmeansed.isnull().sum()</span></code></pre>
+
+
+
 
 <pre><code>model1    0
 model2    0
 model3    0
 model4    0
-dtype: int64</code></pre><pre><code class="hljs python"><span class="hljs-keyword">from</span> sklearn.metrics <span class="hljs-keyword">import</span> accuracy_score
+dtype: int64</code></pre>
+<pre><code class="hljs python"><span class="hljs-keyword">from</span> sklearn.metrics <span class="hljs-keyword">import</span> accuracy_score
 
-normal_data = data_kmeansed[kdd_target == <span class="hljs-string">'normal'</span>]
+normal_data = data_kmeansed[kdd_target == <span class="hljs-string">&#x27;normal&#x27;</span>]
 
 print(normal_data.shape)</code></pre>
 
-<pre><code>(97278, 4)</code></pre><pre><code class="hljs python">back_predict = tree_model.predict(normal_data)</code></pre>
+<pre><code>(97278, 4)</code></pre>
+<pre><code class="hljs python">back_predict = tree_model.predict(normal_data)</code></pre>
 
 <p>计算各个类的预测成功率</p>
 <pre><code class="hljs python">y_data = []
-target = [<span class="hljs-string">'Dos'</span>, <span class="hljs-string">'probe'</span>, <span class="hljs-string">'R2L'</span>, <span class="hljs-string">'U2R'</span>,<span class="hljs-string">'normal'</span>]
+target = [<span class="hljs-string">&#x27;Dos&#x27;</span>, <span class="hljs-string">&#x27;probe&#x27;</span>, <span class="hljs-string">&#x27;R2L&#x27;</span>, <span class="hljs-string">&#x27;U2R&#x27;</span>,<span class="hljs-string">&#x27;normal&#x27;</span>]
 <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> target:
     data1 = data_kmeansed[kdd_target == i]
-    
+
     back_predict = tree_model.predict(data1)
     y_data.append(accuracy_score(kdd_target[kdd_target == i], back_predict))</code></pre>
 
+
 <pre><code class="hljs python">y_data</code></pre>
+
+
+
 
 <pre><code>[0.9955167604187423,
  0.4390065741417093,
  0.325044404973357,
  0.038461538461538464,
- 0.9968852155677542]</code></pre><p>各个类的检测率的可视化</p>
-<pre><code class="hljs python">x_data = [<span class="hljs-string">'Dos'</span>, <span class="hljs-string">'probe'</span>, <span class="hljs-string">'R2L'</span>, <span class="hljs-string">'U2R'</span>, <span class="hljs-string">'normal'</span>]
+ 0.9968852155677542]</code></pre>
+<p>各个类的检测率的可视化</p>
+<pre><code class="hljs python">x_data = [<span class="hljs-string">&#x27;Dos&#x27;</span>, <span class="hljs-string">&#x27;probe&#x27;</span>, <span class="hljs-string">&#x27;R2L&#x27;</span>, <span class="hljs-string">&#x27;U2R&#x27;</span>, <span class="hljs-string">&#x27;normal&#x27;</span>]
 bar_width = <span class="hljs-number">0.3</span>
-plt.bar(x=x_data, height=y_data, label=<span class="hljs-string">'检测正确率'</span>, color=<span class="hljs-string">'steelblue'</span>, alpha=<span class="hljs-number">0.8</span>, width=bar_width)
+plt.bar(x=x_data, height=y_data, label=<span class="hljs-string">&#x27;检测正确率&#x27;</span>, color=<span class="hljs-string">&#x27;steelblue&#x27;</span>, alpha=<span class="hljs-number">0.8</span>, width=bar_width)
 plt.xticks(x_data)
 plt.show()</code></pre>
 
@@ -393,9 +431,12 @@ data1 = data_kmeansed
 kdd_predict = tree_model.predict(data1)
 pd.DataFrame(
     confusion_matrix(kdd_target, kdd_predict), 
-    columns=[<span class="hljs-string">'预测Dos'</span>, <span class="hljs-string">'预测probe'</span>, <span class="hljs-string">'预测R2L'</span>, <span class="hljs-string">'预测U2R'</span>, <span class="hljs-string">'预测normal'</span>],
-    index=[<span class="hljs-string">'实际Dos'</span>, <span class="hljs-string">'实际probe'</span>, <span class="hljs-string">'实际R2L'</span>, <span class="hljs-string">'实际U2R'</span>,<span class="hljs-string">'实际normal'</span>]
+    columns=[<span class="hljs-string">&#x27;预测Dos&#x27;</span>, <span class="hljs-string">&#x27;预测probe&#x27;</span>, <span class="hljs-string">&#x27;预测R2L&#x27;</span>, <span class="hljs-string">&#x27;预测U2R&#x27;</span>, <span class="hljs-string">&#x27;预测normal&#x27;</span>],
+    index=[<span class="hljs-string">&#x27;实际Dos&#x27;</span>, <span class="hljs-string">&#x27;实际probe&#x27;</span>, <span class="hljs-string">&#x27;实际R2L&#x27;</span>, <span class="hljs-string">&#x27;实际U2R&#x27;</span>,<span class="hljs-string">&#x27;实际normal&#x27;</span>]
 )</code></pre>
+
+
+
 
 <div>
 <style scoped>
@@ -403,13 +444,14 @@ pd.DataFrame(
         vertical-align: middle;
     }
 
-<pre><code>.dataframe tbody tr th {
+<pre><code>.dataframe tbody tr th &#123;
     vertical-align: top;
-}
+&#125;
 
-.dataframe thead th {
+.dataframe thead th &#123;
     text-align: right;
-}</code></pre><p></style><p></p>
+&#125;</code></pre>
+<p></style></p>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -473,6 +515,7 @@ pd.DataFrame(
 print(f1_score(kdd_target, kdd_predict, average=<span class="hljs-literal">None</span>))</code></pre>
 
 <pre><code>[0.99712915 0.48157895 0.07407407 0.97536322 0.60412129]</code></pre>
+
             </div>
             <hr>
             <div>
@@ -490,7 +533,7 @@ print(f1_score(kdd_target, kdd_predict, average=<span class="hljs-literal">None<
                 
               </div>
               
-                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
               
               
                 <div class="post-prevnext row">
@@ -507,7 +550,7 @@ print(f1_score(kdd_target, kdd_predict, average=<span class="hljs-literal">None<
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2019/06/25/通用shellcode/">
+                      <a href="/2019/06/25/%E9%80%9A%E7%94%A8shellcode/">
                         <span class="hidden-mobile">通用ShellCode</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
