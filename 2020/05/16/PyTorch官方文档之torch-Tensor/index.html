@@ -1,0 +1,719 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="Stay hungry, Stay foolish">
+  <meta name="author" content="Gale">
+  <meta name="keywords" content>
+  <title>PyTorch官方文档之torch.Tensor - Gale&#39;s Blog</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css">
+  <link rel="stylesheet" href="/lib/hint/hint.min.css">
+
+  
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github.min.css">
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_6peoq002giu.css">
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/color-schema.js"></script>
+<link rel="alternate" href="/atom.xml" title="Gale's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Gale</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/images/background.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-05-16 23:16" pubdate>
+      2020年5月16日 晚上
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      17
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">PyTorch官方文档之torch.Tensor</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>torch分别定义了CPU中存储和GPU中存储的两种类型.</p>
+<a id="more"></a>
+
+<table>
+<thead>
+<tr>
+<th>Data type</th>
+<th>dtype</th>
+<th>CPU tensor</th>
+<th>GPU tensor</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>32-bit floating point</td>
+<td>torch.float32 or torch.float</td>
+<td>torch.FloatTensor</td>
+<td>torch.cuda.FloatTensor</td>
+</tr>
+<tr>
+<td>64-bit floating point</td>
+<td>torch.float64 or torch.double</td>
+<td>torch.DoubleTensor</td>
+<td>torch.cuda.DoubleTensor</td>
+</tr>
+<tr>
+<td>16-bit floating point</td>
+<td>torch.float16 or torch.half</td>
+<td>torch.HalfTensor</td>
+<td>torch.cuda.HalfTensor</td>
+</tr>
+<tr>
+<td>8-bit integer (unsigned)</td>
+<td>torch.uint8</td>
+<td>torch.ByteTensor</td>
+<td>torch.cuda.ByteTensor</td>
+</tr>
+<tr>
+<td>8-bit integer (signed)</td>
+<td>torch.int8</td>
+<td>torch.CharTensor</td>
+<td>torch.cuda.CharTensor</td>
+</tr>
+<tr>
+<td>16-bit integer (signed)</td>
+<td>torch.int16 or torch.short</td>
+<td>torch.ShortTensor</td>
+<td>torch.cuda.ShortTensor</td>
+</tr>
+<tr>
+<td>32-bit integer (signed)</td>
+<td>torch.int32 or torch.int</td>
+<td>torch.IntTensor</td>
+<td>torch.cuda.IntTensor</td>
+</tr>
+<tr>
+<td>64-bit integer (signed)</td>
+<td>torch.int64 or torch.long</td>
+<td>torch.LongTensor</td>
+<td>torch.cuda.LongTensor</td>
+</tr>
+<tr>
+<td>Boolean</td>
+<td>torch.bool</td>
+<td>torch.BoolTensor</td>
+<td>torch.cuda.BoolTensor</td>
+</tr>
+<tr>
+<td>torch.Tensor()等于就是torch.FloatTensor()</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> torch
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np</code></pre>
+
+<pre><code class="hljs python">a = torch.Tensor(<span class="hljs-number">1</span>) <span class="hljs-comment"># torch.Tensor()就是默认数据类型为torch.FloatTensor()的张量</span>
+b = torch.FloatTensor(<span class="hljs-number">1</span>)
+a,b <span class="hljs-comment"># torch.Tensor()创建一个默认类型为torch.FloatTensor()的张量,torch.FloatTensor()是CPU中类型</span></code></pre>
+
+<pre><code>(tensor([1.4013e-45]), tensor([1.4013e-45]))</code></pre><p>使用Python中的list创建tensor张量,或者使用np.array()也可以</p>
+<pre><code class="hljs python">a = torch.tensor([[<span class="hljs-number">1.</span>, <span class="hljs-number">-1.</span>], [<span class="hljs-number">1.</span>, <span class="hljs-number">-1.</span>]]) <span class="hljs-comment"># 注意,这里创建的是内容为1.和-1.的tensor,不是维度,</span>
+b = torch.tensor(((<span class="hljs-number">1.</span>, <span class="hljs-number">-1.</span>), (<span class="hljs-number">1.</span>, <span class="hljs-number">-1.</span>))) <span class="hljs-comment"># 并且,这里用[]或()都一样</span>
+a, b</code></pre>
+
+<pre><code>(tensor([[ 1., -1.],
+         [ 1., -1.]]), tensor([[ 1., -1.],
+         [ 1., -1.]]))</code></pre><pre><code class="hljs python">torch.tensor(np.array([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]]))</code></pre>
+
+<pre><code>tensor([[1, 2, 3],
+        [4, 5, 6]], dtype=torch.int32)</code></pre><p>PS: 使用requires_grad_()或者detach()允许更改requires_grad的标志<br>使用torch.dtype指定类型,使用torch.device指定存储的位置</p>
+<pre><code class="hljs python">torch.zeros([<span class="hljs-number">2</span>, <span class="hljs-number">4</span>], dtype=torch.int32)</code></pre>
+
+<pre><code>tensor([[0, 0, 0, 0],
+        [0, 0, 0, 0]], dtype=torch.int32)</code></pre><pre><code class="hljs python">cuda = torch.device(<span class="hljs-string">'cuda:0'</span>)
+torch.ones([<span class="hljs-number">2</span>, <span class="hljs-number">4</span>], dtype=torch.float64, device=cuda)</code></pre>
+
+<pre><code>tensor([[1., 1., 1., 1.],
+        [1., 1., 1., 1.]], device=&apos;cuda:0&apos;, dtype=torch.float64)</code></pre><p>索引:可以使用Python的索引方式</p>
+<pre><code class="hljs python">x = torch.tensor([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]])
+print(x)
+print(x[<span class="hljs-number">1</span>][<span class="hljs-number">2</span>])
+print(x[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>])
+x[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>] = <span class="hljs-number">8</span>
+print(x)</code></pre>
+
+<pre><code>tensor([[1, 2, 3],
+        [4, 5, 6]])
+tensor(6)
+tensor(6)
+tensor([[1, 8, 3],
+        [4, 5, 6]])</code></pre><p>使用<code>torch.Tensor.item()</code>返回张量的值</p>
+<pre><code class="hljs python">x = torch.tensor([[<span class="hljs-number">1</span>]])
+print(x)
+print(x.item())
+x = torch.tensor(<span class="hljs-number">2.5</span>)
+print(x)
+print(x.item())</code></pre>
+
+<pre><code>tensor([[1]])
+1
+tensor(2.5000)
+2.5</code></pre><p>使用<code>requires_grad=True</code>让tensor张量能够记下操作记录,以致于可以求导</p>
+<pre><code class="hljs python">x = torch.tensor([[<span class="hljs-number">1.</span>, <span class="hljs-number">-1.</span>], [<span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>]], requires_grad=<span class="hljs-literal">True</span>)
+out = x.pow(<span class="hljs-number">2</span>).sum() <span class="hljs-comment"># out = x^2</span>
+out.backward() <span class="hljs-comment"># 求导:out = 2 * x</span>
+print(x.grad)</code></pre>
+
+<pre><code>tensor([[ 2., -2.],
+        [ 2.,  2.]])</code></pre><p>NOTE:当需要改变现存的tensor的device时,使用<code>to()</code>方法</p>
+<h1 id="CLASS-torch-Tensor"><a href="#CLASS-torch-Tensor" class="headerlink" title="CLASS torch.Tensor"></a>CLASS torch.Tensor</h1><p>有几种创建tensor的方式</p>
+<ol>
+<li>用上述的<code>torch.tensor()</code>创建</li>
+<li>用torch.*来创建指定size的张量</li>
+<li>用一个张量的size来创建不同类型的张量,使用torch.*_like</li>
+<li>用一个张量的类型创建不同size的张量,使用torch.new_*</li>
+</ol>
+<p>例如:<code>torch.rand(),torch.rand_like(),torch.randn(),torch.randn_like()</code><br><code>,torch.randint(),torch.randint_like(),torch.randperm(),torch.empty()</code></p>
+<h2 id="new-tensor-data"><a href="#new-tensor-data" class="headerlink" title="new_tensor(data)"></a>new_tensor(data)</h2><p>创建一个数据为data其他都为原tensor类型的一个张量</p>
+<pre><code class="hljs python">t = torch.ones((<span class="hljs-number">2</span>, ), dtype=torch.int8)
+data = [[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]]
+t.new_tensor(data)</code></pre>
+
+<pre><code>tensor([[0, 1],
+        [2, 3]], dtype=torch.int8)</code></pre><h2 id="new-full-size-fill-value"><a href="#new-full-size-fill-value" class="headerlink" title="new_full(size, fill_value)"></a>new_full(size, fill_value)</h2><p>返回一个用fill_value填充的size维度的Tensor,默认返回的dtype和device相同<br>fill_value标量</p>
+<pre><code class="hljs python">t = torch.ones((<span class="hljs-number">2</span>, ), dtype=torch.float64)
+t.new_full((<span class="hljs-number">3</span>, <span class="hljs-number">4</span>), <span class="hljs-number">3.141592</span>)</code></pre>
+
+<pre><code>tensor([[3.1416, 3.1416, 3.1416, 3.1416],
+        [3.1416, 3.1416, 3.1416, 3.1416],
+        [3.1416, 3.1416, 3.1416, 3.1416]], dtype=torch.float64)</code></pre><h2 id="new-empty-size"><a href="#new-empty-size" class="headerlink" title="new_empty(size)"></a>new_empty(size)</h2><p>返回size维度的用随机初始化数据填充的Tensor</p>
+<pre><code class="hljs python">t = torch.ones((<span class="hljs-number">1</span> ))
+print(t)
+t.new_empty((<span class="hljs-number">2</span>, <span class="hljs-number">3</span>))</code></pre>
+
+<pre><code>tensor([1.])
+
+
+
+
+
+tensor([[0.0000e+00, 0.0000e+00, 1.4013e-45],
+        [0.0000e+00, 1.4013e-45, 0.0000e+00]])</code></pre><h2 id="new-ones-size"><a href="#new-ones-size" class="headerlink" title="new_ones(size)"></a>new_ones(size)</h2><p>返回一个size维度但是用1填充的Tensor</p>
+<pre><code class="hljs python">t = torch.tensor((<span class="hljs-number">2.</span>))<span class="hljs-comment">#, dtype=torch.int32)</span>
+print(t.dtype)
+print(t.new_ones((<span class="hljs-number">2</span>, <span class="hljs-number">3</span>)))
+print(t)</code></pre>
+
+<pre><code>torch.float32
+tensor([[1., 1., 1.],
+        [1., 1., 1.]])
+tensor(2.)</code></pre><h2 id="new-zeros-size"><a href="#new-zeros-size" class="headerlink" title="new_zeros(size)"></a>new_zeros(size)</h2><p>返回一个size大小用0填充的Tensor</p>
+<pre><code class="hljs python">tensor = torch.tensor((), dtype=torch.float64)
+tensor.new_zeros((<span class="hljs-number">2</span>, <span class="hljs-number">3</span>))</code></pre>
+
+<pre><code>tensor([[0., 0., 0.],
+        [0., 0., 0.]], dtype=torch.float64)</code></pre><h2 id="is-cuda"><a href="#is-cuda" class="headerlink" title="is_cuda()"></a>is_cuda()</h2><p>如果tensor存储在GPU中返回True,否则返回False</p>
+<h2 id="is-quantized"><a href="#is-quantized" class="headerlink" title="is_quantized()"></a>is_quantized()</h2><p>如果tensor是量化的返回True,否则返回False</p>
+<h2 id="device"><a href="#device" class="headerlink" title="device"></a>device</h2><p>返回Tensor存在哪</p>
+<h2 id="grad"><a href="#grad" class="headerlink" title="grad"></a>grad</h2><p>记录求导<code>backward()</code>之后变量的值</p>
+<h2 id="ndim"><a href="#ndim" class="headerlink" title="ndim"></a>ndim</h2><p>dim()的别名,返回的tensor的维度</p>
+<h2 id="T"><a href="#T" class="headerlink" title="T"></a>T</h2><p>返回矩阵的转置</p>
+<pre><code class="hljs python">x = torch.tensor([[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]])
+print(x)
+print(x.T)</code></pre>
+
+<pre><code>tensor([[0, 1],
+        [2, 3]])
+tensor([[0, 2],
+        [1, 3]])</code></pre><h2 id="abs-abs"><a href="#abs-abs" class="headerlink" title="abs() / abs_()"></a>abs() / abs_()</h2><p>与torch.abs()相同,返回矩阵中元素的绝对值</p>
+<pre><code class="hljs python">torch.tensor([<span class="hljs-number">-1</span>, <span class="hljs-number">-2</span>, <span class="hljs-number">3</span>]).abs()</code></pre>
+
+<pre><code>tensor([1, 2, 3])</code></pre><h2 id="acos-acos"><a href="#acos-acos" class="headerlink" title="acos() / acos_()"></a>acos() / acos_()</h2><p>与torch.acos()相同,返回arccos反余弦值</p>
+<h2 id="add-other-alpha-1-add"><a href="#add-other-alpha-1-add" class="headerlink" title="add(other, *, alpha=1) / add_()"></a>add(other, *, alpha=1) / add_()</h2><p>与torch.add()相同,返回张量+alpha*other</p>
+<pre><code class="hljs python">x = torch.ones((<span class="hljs-number">2</span>, <span class="hljs-number">3</span>))
+print(x)
+x.add(<span class="hljs-number">1</span>, alpha=<span class="hljs-number">2</span>)</code></pre>
+
+<pre><code>tensor([[1., 1., 1.],
+        [1., 1., 1.]])
+
+
+
+
+
+tensor([[3., 3., 3.],
+        [3., 3., 3.]])</code></pre>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/深度学习/">深度学习</a>
+                    
+                      <a class="hover-with-bg" href="/tags/PyTorch/">PyTorch</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/03/24/CNN-Dective-kdd99/">
+                        <span class="hidden-mobile">CNN_Dective_kdd99</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "PyTorch官方文档之torch.Tensor&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

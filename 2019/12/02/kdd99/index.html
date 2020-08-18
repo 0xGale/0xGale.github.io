@@ -1,0 +1,793 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="Stay hungry, Stay foolish">
+  <meta name="author" content="Gale">
+  <meta name="keywords" content>
+  <title>&lt;&lt;基于特征分组聚类的异常入侵检测系统研究&gt;&gt;代码复现 - Gale&#39;s Blog</title>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
+
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css">
+  <link rel="stylesheet" href="/lib/hint/hint.min.css">
+
+  
+    
+    <link rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github.min.css">
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_6peoq002giu.css">
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/color-schema.js"></script>
+<link rel="alternate" href="/atom.xml" title="Gale's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Gale</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/images/background.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2019-12-02 22:25" pubdate>
+      2019年12月2日 晚上
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      27
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">&lt;&lt;基于特征分组聚类的异常入侵检测系统研究&gt;&gt;代码复现</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="导入数据集"><a href="#导入数据集" class="headerlink" title="导入数据集"></a>导入数据集</h1><a id="more"></a>
+
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+<span class="hljs-keyword">from</span> sklearn.cluster <span class="hljs-keyword">import</span> KMeans
+columns_names = [<span class="hljs-string">'duration'</span>, <span class="hljs-string">'protocol_type'</span>, <span class="hljs-string">'service'</span>, <span class="hljs-string">'flag'</span>, <span class="hljs-string">'src_bytes'</span>, <span class="hljs-string">'dst_bytes'</span>, <span class="hljs-string">'land'</span>, <span class="hljs-string">'wrong_fragment'</span>, <span class="hljs-string">'urgent'</span>, <span class="hljs-string">'hot'</span>, <span class="hljs-string">'num_failed_logins'</span>, <span class="hljs-string">'logged_in'</span>, <span class="hljs-string">'num_compromised'</span>, <span class="hljs-string">'root_shell'</span>, <span class="hljs-string">'su_attempted'</span>, <span class="hljs-string">'num_root'</span>, <span class="hljs-string">'num_file_creations'</span>, <span class="hljs-string">'num_shells'</span>, <span class="hljs-string">'num_access_files'</span>, <span class="hljs-string">'num_outbound_cmds'</span>, <span class="hljs-string">'is_host_login'</span>, <span class="hljs-string">'is_guest_login'</span>, <span class="hljs-string">'count'</span>, <span class="hljs-string">'srv_count'</span>, <span class="hljs-string">'serror_rate'</span>, <span class="hljs-string">'srv_serror_rate'</span>, <span class="hljs-string">'rerror_rate'</span>, <span class="hljs-string">'srv_rerror_rate'</span>, <span class="hljs-string">'same_srv_rate'</span>, <span class="hljs-string">'diff_srv_rate'</span>, <span class="hljs-string">'srv_diff_host_rate'</span>, <span class="hljs-string">'dst_host_count'</span>, <span class="hljs-string">'dst_host_srv_count'</span>, <span class="hljs-string">'dst_host_same_srv_rate'</span>, <span class="hljs-string">'dst_host_diff_srv_rate'</span>, <span class="hljs-string">'dst_host_same_src_port_rate'</span>, <span class="hljs-string">'dst_host_srv_diff_host_rate'</span>, <span class="hljs-string">'dst_host_serror_rate'</span>, <span class="hljs-string">'dst_host_srv_serror_rate'</span>, <span class="hljs-string">'dst_host_rerror_rate'</span>, <span class="hljs-string">'dst_host_srv_rerror_rate'</span>,<span class="hljs-string">'result'</span>]
+df = pd.read_csv(<span class="hljs-string">'./Sets/kddcup.data_10_percent/kddcup_10_percent.csv'</span>, names=columns_names)
+<span class="hljs-comment">#print(df.iloc[:,0:4])</span>
+kdd_data = df.iloc[:,:<span class="hljs-number">-1</span>]   <span class="hljs-comment"># 保存无标签数据集</span>
+kdd_target = df.iloc[:,<span class="hljs-number">-1</span>] <span class="hljs-comment"># 保存标签列</span></code></pre>
+
+<p>输出部分数据，查看是否有误</p>
+<pre><code class="hljs python">print(kdd_data.head())
+print(kdd_target.head())</code></pre>
+
+<pre><code>   duration protocol_type service flag  src_bytes  dst_bytes  land  \
+0         0           tcp    http   SF        181       5450     0   
+1         0           tcp    http   SF        239        486     0   
+2         0           tcp    http   SF        235       1337     0   
+3         0           tcp    http   SF        219       1337     0   
+4         0           tcp    http   SF        217       2032     0   
+
+   wrong_fragment  urgent  hot  ...  dst_host_count  dst_host_srv_count  \
+0               0       0    0  ...               9                   9   
+1               0       0    0  ...              19                  19   
+2               0       0    0  ...              29                  29   
+3               0       0    0  ...              39                  39   
+4               0       0    0  ...              49                  49   
+
+   dst_host_same_srv_rate  dst_host_diff_srv_rate  \
+0                     1.0                     0.0   
+1                     1.0                     0.0   
+2                     1.0                     0.0   
+3                     1.0                     0.0   
+4                     1.0                     0.0   
+
+   dst_host_same_src_port_rate  dst_host_srv_diff_host_rate  \
+0                         0.11                          0.0   
+1                         0.05                          0.0   
+2                         0.03                          0.0   
+3                         0.03                          0.0   
+4                         0.02                          0.0   
+
+   dst_host_serror_rate  dst_host_srv_serror_rate  dst_host_rerror_rate  \
+0                   0.0                       0.0                   0.0   
+1                   0.0                       0.0                   0.0   
+2                   0.0                       0.0                   0.0   
+3                   0.0                       0.0                   0.0   
+4                   0.0                       0.0                   0.0   
+
+   dst_host_srv_rerror_rate  
+0                       0.0  
+1                       0.0  
+2                       0.0  
+3                       0.0  
+4                       0.0  
+
+[5 rows x 41 columns]
+0    normal.
+1    normal.
+2    normal.
+3    normal.
+4    normal.
+Name: result, dtype: object</code></pre><h1 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h1><p>1.将类型为：string的列用one-hot编码数值化<br>2.将编码后的数据，再合并到原来的数据中，并且删除原本数据类型为string的列的数据<br>3.再使用最大最小化归一化</p>
+<h2 id="ont-hot编码"><a href="#ont-hot编码" class="headerlink" title="ont-hot编码"></a>ont-hot编码</h2><pre><code class="hljs python">data = pd.get_dummies(df[[<span class="hljs-string">'protocol_type'</span>, <span class="hljs-string">'service'</span>, <span class="hljs-string">'flag'</span>]])
+print(len(data.columns))
+print(len(df.columns))</code></pre>
+
+<pre><code>80
+42</code></pre><h2 id="合并数值化后的数据，删除原来string类型的数据"><a href="#合并数值化后的数据，删除原来string类型的数据" class="headerlink" title="合并数值化后的数据，删除原来string类型的数据"></a>合并数值化后的数据，删除原来string类型的数据</h2><pre><code class="hljs python">kdd_data_comb = pd.merge(kdd_data, data, how=<span class="hljs-string">'outer'</span>, left_index=<span class="hljs-literal">True</span>, right_index=<span class="hljs-literal">True</span>)
+print(kdd_data_comb.shape)
+<span class="hljs-comment"># print(list(kdd_data_comb.columns))</span>
+<span class="hljs-comment"># print(list(kdd_data.columns))</span>
+<span class="hljs-comment"># print(kdd_data.head())</span>
+kdd_data_comb = kdd_data_comb.drop(columns=[<span class="hljs-string">'protocol_type'</span>, <span class="hljs-string">'service'</span>, <span class="hljs-string">'flag'</span>])</code></pre>
+
+<pre><code>(494021, 121)</code></pre><h2 id="数据归一化"><a href="#数据归一化" class="headerlink" title="数据归一化"></a>数据归一化</h2><pre><code class="hljs python"><span class="hljs-keyword">from</span> sklearn.preprocessing <span class="hljs-keyword">import</span> MinMaxScaler
+
+scale = MinMaxScaler().fit(kdd_data_comb)
+kdd_dataScale = scale.transform(kdd_data_comb)</code></pre>
+
+<h1 id="KMeans降维"><a href="#KMeans降维" class="headerlink" title="KMeans降维"></a>KMeans降维</h1><p>这里将数据按照论文中的方式，将数据集划分为4组，然后对每一组作Kmeans聚类</p>
+<pre><code class="hljs python">model1 = KMeans(n_clusters=<span class="hljs-number">10</span>).fit(kdd_data_comb.loc[:,[<span class="hljs-string">'duration'</span>, <span class="hljs-string">'protocol_type_icmp'</span>, <span class="hljs-string">'protocol_type_tcp'</span>, <span class="hljs-string">'protocol_type_udp'</span>, <span class="hljs-string">'service_IRC'</span>, <span class="hljs-string">'service_X11'</span>, <span class="hljs-string">'service_Z39_50'</span>, <span class="hljs-string">'service_auth'</span>, <span class="hljs-string">'service_bgp'</span>, <span class="hljs-string">'service_courier'</span>, <span class="hljs-string">'service_csnet_ns'</span>, <span class="hljs-string">'service_ctf'</span>, <span class="hljs-string">'service_daytime'</span>, <span class="hljs-string">'service_discard'</span>, <span class="hljs-string">'service_domain'</span>, <span class="hljs-string">'service_domain_u'</span>, <span class="hljs-string">'service_echo'</span>, <span class="hljs-string">'service_eco_i'</span>, <span class="hljs-string">'service_ecr_i'</span>, <span class="hljs-string">'service_efs'</span>, <span class="hljs-string">'service_exec'</span>, <span class="hljs-string">'service_finger'</span>, <span class="hljs-string">'service_ftp'</span>, <span class="hljs-string">'service_ftp_data'</span>, <span class="hljs-string">'service_gopher'</span>, <span class="hljs-string">'service_hostnames'</span>, <span class="hljs-string">'service_http'</span>, <span class="hljs-string">'service_http_443'</span>, <span class="hljs-string">'service_imap4'</span>, <span class="hljs-string">'service_iso_tsap'</span>, <span class="hljs-string">'service_klogin'</span>, <span class="hljs-string">'service_kshell'</span>, <span class="hljs-string">'service_ldap'</span>, <span class="hljs-string">'service_link'</span>, <span class="hljs-string">'service_login'</span>, <span class="hljs-string">'service_mtp'</span>, <span class="hljs-string">'service_name'</span>, <span class="hljs-string">'service_netbios_dgm'</span>, <span class="hljs-string">'service_netbios_ns'</span>, <span class="hljs-string">'service_netbios_ssn'</span>, <span class="hljs-string">'service_netstat'</span>, <span class="hljs-string">'service_nnsp'</span>, <span class="hljs-string">'service_nntp'</span>, <span class="hljs-string">'service_ntp_u'</span>, <span class="hljs-string">'service_other'</span>, <span class="hljs-string">'service_pm_dump'</span>, <span class="hljs-string">'service_pop_2'</span>, <span class="hljs-string">'service_pop_3'</span>, <span class="hljs-string">'service_printer'</span>, <span class="hljs-string">'service_private'</span>, <span class="hljs-string">'service_red_i'</span>, <span class="hljs-string">'service_remote_job'</span>, <span class="hljs-string">'service_rje'</span>, <span class="hljs-string">'service_shell'</span>, <span class="hljs-string">'service_smtp'</span>, <span class="hljs-string">'service_sql_net'</span>, <span class="hljs-string">'service_ssh'</span>, <span class="hljs-string">'service_sunrpc'</span>, <span class="hljs-string">'service_supdup'</span>, <span class="hljs-string">'service_systat'</span>, <span class="hljs-string">'service_telnet'</span>, <span class="hljs-string">'service_tftp_u'</span>, <span class="hljs-string">'service_tim_i'</span>, <span class="hljs-string">'service_time'</span>, <span class="hljs-string">'service_urh_i'</span>, <span class="hljs-string">'service_urp_i'</span>, <span class="hljs-string">'service_uucp'</span>, <span class="hljs-string">'service_uucp_path'</span>, <span class="hljs-string">'service_vmnet'</span>, <span class="hljs-string">'service_whois'</span>, <span class="hljs-string">'flag_OTH'</span>, <span class="hljs-string">'flag_REJ'</span>, <span class="hljs-string">'flag_RSTO'</span>, <span class="hljs-string">'flag_RSTOS0'</span>, <span class="hljs-string">'flag_RSTR'</span>, <span class="hljs-string">'flag_S0'</span>, <span class="hljs-string">'flag_S1'</span>, <span class="hljs-string">'flag_S2'</span>, <span class="hljs-string">'flag_S3'</span>, <span class="hljs-string">'flag_SF'</span>, <span class="hljs-string">'flag_SH'</span>, <span class="hljs-string">'src_bytes'</span>, <span class="hljs-string">'dst_bytes'</span>, <span class="hljs-string">'land'</span>, <span class="hljs-string">'wrong_fragment'</span>, <span class="hljs-string">'urgent'</span>]])
+model2 = KMeans(n_clusters=<span class="hljs-number">10</span>).fit(kdd_data_comb.loc[:,[<span class="hljs-string">'hot'</span>, <span class="hljs-string">'num_failed_logins'</span>, <span class="hljs-string">'logged_in'</span>, <span class="hljs-string">'num_compromised'</span>, <span class="hljs-string">'root_shell'</span>, <span class="hljs-string">'su_attempted'</span>, <span class="hljs-string">'num_root'</span>, <span class="hljs-string">'num_file_creations'</span>, <span class="hljs-string">'num_shells'</span>, <span class="hljs-string">'num_access_files'</span>, <span class="hljs-string">'num_outbound_cmds'</span>, <span class="hljs-string">'is_host_login'</span>, <span class="hljs-string">'is_guest_login'</span>]])
+model3 = KMeans(n_clusters=<span class="hljs-number">10</span>).fit(kdd_data_comb.loc[:,[<span class="hljs-string">'count'</span>, <span class="hljs-string">'srv_count'</span>, <span class="hljs-string">'serror_rate'</span>, <span class="hljs-string">'srv_serror_rate'</span>, <span class="hljs-string">'rerror_rate'</span>, <span class="hljs-string">'srv_rerror_rate'</span>, <span class="hljs-string">'same_srv_rate'</span>, <span class="hljs-string">'diff_srv_rate'</span>, <span class="hljs-string">'srv_diff_host_rate'</span>]])
+model4 = KMeans(n_clusters=<span class="hljs-number">10</span>).fit(kdd_data_comb.loc[:,[<span class="hljs-string">'dst_host_count'</span>, <span class="hljs-string">'dst_host_srv_count'</span>, <span class="hljs-string">'dst_host_same_srv_rate'</span>, <span class="hljs-string">'dst_host_diff_srv_rate'</span>, <span class="hljs-string">'dst_host_same_src_port_rate'</span>, <span class="hljs-string">'dst_host_srv_diff_host_rate'</span>, <span class="hljs-string">'dst_host_serror_rate'</span>, <span class="hljs-string">'dst_host_srv_serror_rate'</span>, <span class="hljs-string">'dst_host_rerror_rate'</span>, <span class="hljs-string">'dst_host_srv_rerror_rate'</span>]])</code></pre>
+
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+np.unique(model1.labels_) <span class="hljs-comment"># 这里显示聚类结果中所有的值，如果只是打印出来，看不到除0以外的其他值</span></code></pre>
+
+<pre><code>array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])</code></pre><pre><code class="hljs python">sizes = [(model1.labels_ == i).sum() <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">10</span>) ] <span class="hljs-comment">#每块值</span>
+print(sizes)
+print(len(model1.labels_))</code></pre>
+
+<pre><code>[491472, 1, 59, 16, 24, 21, 6, 77, 2343, 2]
+494021</code></pre><pre><code class="hljs python"><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+plt.figure(figsize=(<span class="hljs-number">6</span>,<span class="hljs-number">9</span>)) <span class="hljs-comment">#调节图形大小</span>
+labels = [<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>] <span class="hljs-comment">#定义标签</span>
+<span class="hljs-comment"># sizes = [i for i in range(10): model1.labels_ == i] #每块值</span>
+explode = (<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>) <span class="hljs-comment">#将某一块分割出来，值越大分割出的间隙越大</span>
+patches,text1,text2 = plt.pie(sizes,
+                      explode=explode,
+                      labels=labels,
+                      autopct = <span class="hljs-string">'%3.2f%%'</span>, <span class="hljs-comment">#数值保留固定小数位</span>
+                      shadow = <span class="hljs-literal">False</span>, <span class="hljs-comment">#无阴影设置</span>
+                      startangle =<span class="hljs-number">90</span>, <span class="hljs-comment">#逆时针起始角度设置</span>
+                      pctdistance = <span class="hljs-number">0.6</span>) <span class="hljs-comment">#数值距圆心半径倍数距离</span>
+<span class="hljs-comment">#patches饼图的返回值，texts1饼图外label的文本，texts2饼图内部的文本</span>
+<span class="hljs-comment"># x，y轴刻度设置一致，保证饼图为圆形</span>
+plt.axis(<span class="hljs-string">'equal'</span>)
+plt.show()</code></pre>
+
+<pre><code>&lt;Figure size 600x900 with 1 Axes&gt;</code></pre><h2 id="合并降维后的数据"><a href="#合并降维后的数据" class="headerlink" title="合并降维后的数据"></a>合并降维后的数据</h2><p>可以看到数据经过kmeans降维后，数据集就变成了只有4维的数据了</p>
+<pre><code class="hljs python">data_kmeansed = pd.DataFrame(&#123;<span class="hljs-string">'model1'</span>: model1.labels_, <span class="hljs-string">'model2'</span>: model2.labels_, <span class="hljs-string">'model3'</span>: model3.labels_, <span class="hljs-string">'model4'</span>: model4.labels_&#125;, columns=[<span class="hljs-string">'model1'</span>, <span class="hljs-string">'model2'</span>, <span class="hljs-string">'model3'</span>, <span class="hljs-string">'model4'</span>])
+print(data_kmeansed.head())
+print(data_kmeansed.shape)</code></pre>
+
+<pre><code>   model1  model2  model3  model4
+0       0       4       2       3
+1       0       4       2       3
+2       0       4       2       3
+3       0       4       2       3
+4       0       4       2       3
+(494021, 4)</code></pre><pre><code class="hljs python"><span class="hljs-comment"># data_kmeansed_onehot = pd.get_dummies(data_kmeansed[['model1', 'model2', 'model3', 'model4']])</span>
+<span class="hljs-comment"># print(pd.get_dummies(data_kmeansed[['model1', 'model2', 'model3', 'model4']]).head()) # 可以看到这里对数据值数据进行one-hot编码数值不变</span></code></pre>
+
+<h2 id="标签处理"><a href="#标签处理" class="headerlink" title="标签处理"></a>标签处理</h2><p>该模型只对5种大类型的攻击方式进行预测，但是数据集中原标签全是小类型，需要将小类型的标签，根据攻击方式的不同划分到大类型中</p>
+<pre><code class="hljs python">np.unique(kdd_target) <span class="hljs-comment"># 显示当前标签中的值</span></code></pre>
+
+<pre><code>array([&apos;back.&apos;, &apos;buffer_overflow.&apos;, &apos;ftp_write.&apos;, &apos;guess_passwd.&apos;,
+       &apos;imap.&apos;, &apos;ipsweep.&apos;, &apos;land.&apos;, &apos;loadmodule.&apos;, &apos;multihop.&apos;,
+       &apos;neptune.&apos;, &apos;nmap.&apos;, &apos;normal.&apos;, &apos;perl.&apos;, &apos;phf.&apos;, &apos;pod.&apos;,
+       &apos;portsweep.&apos;, &apos;rootkit.&apos;, &apos;satan.&apos;, &apos;smurf.&apos;, &apos;spy.&apos;, &apos;teardrop.&apos;,
+       &apos;warezclient.&apos;, &apos;warezmaster.&apos;], dtype=object)</code></pre><pre><code class="hljs python">kdd_target_test = kdd_target.copy(<span class="hljs-literal">True</span>) <span class="hljs-comment"># 深度复制</span></code></pre>
+
+<pre><code class="hljs python"><span class="hljs-comment"># 做个映射将标签中的小类，按照先验知识划分为5个大类</span></code></pre>
+
+<pre><code class="hljs python"><span class="hljs-comment"># print(kdd_target_test[kdd_target_test=='Dos'].head())</span>
+print(np.unique(kdd_target))</code></pre>
+
+<pre><code>[&apos;Dos&apos; &apos;R2L&apos; &apos;U2R&apos; &apos;normal&apos; &apos;probe&apos;]</code></pre><p>替换</p>
+<pre><code class="hljs python">Dos_target = &#123;<span class="hljs-string">'back.'</span>:<span class="hljs-string">'Dos'</span>, <span class="hljs-string">'neptune.'</span>:<span class="hljs-string">'Dos'</span>, <span class="hljs-string">'pod.'</span>:<span class="hljs-string">'Dos'</span>, <span class="hljs-string">'smurf.'</span>:<span class="hljs-string">'Dos'</span>, <span class="hljs-string">'land.'</span>:<span class="hljs-string">'Dos'</span>, <span class="hljs-string">'teardrop.'</span>:<span class="hljs-string">'Dos'</span>, <span class="hljs-string">'normal.'</span>:<span class="hljs-string">'normal'</span>,<span class="hljs-string">'ipsweep.'</span>:<span class="hljs-string">'probe'</span>, <span class="hljs-string">'nmap.'</span>:<span class="hljs-string">'probe'</span>, <span class="hljs-string">'portsweep.'</span>:<span class="hljs-string">'probe'</span>, <span class="hljs-string">'satan.'</span>:<span class="hljs-string">'probe'</span>, <span class="hljs-string">'ftp_write.'</span>:<span class="hljs-string">'R2L'</span>, <span class="hljs-string">'guess_passwd.'</span>:<span class="hljs-string">'R2L'</span>, <span class="hljs-string">'imap.'</span>:<span class="hljs-string">'R2L'</span>, <span class="hljs-string">'multihop.'</span>:<span class="hljs-string">'R2L'</span>, <span class="hljs-string">'phf.'</span>:<span class="hljs-string">'R2L'</span>, <span class="hljs-string">'spy.'</span>:<span class="hljs-string">'R2L'</span>, <span class="hljs-string">'warezclient.'</span>:<span class="hljs-string">'R2L'</span>, <span class="hljs-string">'warezmaster.'</span>:<span class="hljs-string">'R2L'</span>, <span class="hljs-string">'buffer_overflow.'</span>:<span class="hljs-string">'U2R'</span>, <span class="hljs-string">'loadmodule.'</span>:<span class="hljs-string">'U2R'</span>, <span class="hljs-string">'perl.'</span>:<span class="hljs-string">'U2R'</span>, <span class="hljs-string">'rootkit.'</span>:<span class="hljs-string">'U2R'</span>&#125;
+kdd_target = kdd_target_test.map(Dos_target)</code></pre>
+
+<h1 id="决策树做训练"><a href="#决策树做训练" class="headerlink" title="决策树做训练"></a>决策树做训练</h1><pre><code class="hljs python"><span class="hljs-keyword">from</span> sklearn <span class="hljs-keyword">import</span> tree
+tree_model = tree.DecisionTreeClassifier(criterion=<span class="hljs-string">'entropy'</span>,random_state=<span class="hljs-number">30</span>)<span class="hljs-comment"># criterion='entropy'调用的就是C4.5算法，默认是CART</span>
+tree_model.fit(data_kmeansed, kdd_target)</code></pre>
+
+<pre><code>DecisionTreeClassifier(class_weight=None, criterion=&apos;entropy&apos;, max_depth=None,
+                       max_features=None, max_leaf_nodes=None,
+                       min_impurity_decrease=0.0, min_impurity_split=None,
+                       min_samples_leaf=1, min_samples_split=2,
+                       min_weight_fraction_leaf=0.0, presort=False,
+                       random_state=30, splitter=&apos;best&apos;)</code></pre><pre><code class="hljs python"><span class="hljs-comment"># data_kmeansed.isnull().sum()</span></code></pre>
+
+<pre><code>model1    0
+model2    0
+model3    0
+model4    0
+dtype: int64</code></pre><pre><code class="hljs python"><span class="hljs-keyword">from</span> sklearn.metrics <span class="hljs-keyword">import</span> accuracy_score
+
+normal_data = data_kmeansed[kdd_target == <span class="hljs-string">'normal'</span>]
+
+print(normal_data.shape)</code></pre>
+
+<pre><code>(97278, 4)</code></pre><pre><code class="hljs python">back_predict = tree_model.predict(normal_data)</code></pre>
+
+<p>计算各个类的预测成功率</p>
+<pre><code class="hljs python">y_data = []
+target = [<span class="hljs-string">'Dos'</span>, <span class="hljs-string">'probe'</span>, <span class="hljs-string">'R2L'</span>, <span class="hljs-string">'U2R'</span>,<span class="hljs-string">'normal'</span>]
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> target:
+    data1 = data_kmeansed[kdd_target == i]
+    
+    back_predict = tree_model.predict(data1)
+    y_data.append(accuracy_score(kdd_target[kdd_target == i], back_predict))</code></pre>
+
+<pre><code class="hljs python">y_data</code></pre>
+
+<pre><code>[0.9955167604187423,
+ 0.4390065741417093,
+ 0.325044404973357,
+ 0.038461538461538464,
+ 0.9968852155677542]</code></pre><p>各个类的检测率的可视化</p>
+<pre><code class="hljs python">x_data = [<span class="hljs-string">'Dos'</span>, <span class="hljs-string">'probe'</span>, <span class="hljs-string">'R2L'</span>, <span class="hljs-string">'U2R'</span>, <span class="hljs-string">'normal'</span>]
+bar_width = <span class="hljs-number">0.3</span>
+plt.bar(x=x_data, height=y_data, label=<span class="hljs-string">'检测正确率'</span>, color=<span class="hljs-string">'steelblue'</span>, alpha=<span class="hljs-number">0.8</span>, width=bar_width)
+plt.xticks(x_data)
+plt.show()</code></pre>
+
+<p><img src="/images/output_35_0.png" srcset="/img/loading.gif" alt="output_35_0"></p>
+<pre><code class="hljs python"><span class="hljs-keyword">from</span> sklearn.metrics <span class="hljs-keyword">import</span> confusion_matrix
+
+data1 = data_kmeansed
+kdd_predict = tree_model.predict(data1)
+pd.DataFrame(
+    confusion_matrix(kdd_target, kdd_predict), 
+    columns=[<span class="hljs-string">'预测Dos'</span>, <span class="hljs-string">'预测probe'</span>, <span class="hljs-string">'预测R2L'</span>, <span class="hljs-string">'预测U2R'</span>, <span class="hljs-string">'预测normal'</span>],
+    index=[<span class="hljs-string">'实际Dos'</span>, <span class="hljs-string">'实际probe'</span>, <span class="hljs-string">'实际R2L'</span>, <span class="hljs-string">'实际U2R'</span>,<span class="hljs-string">'实际normal'</span>]
+)</code></pre>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th {
+    vertical-align: top;
+}
+
+.dataframe thead th {
+    text-align: right;
+}</code></pre><p></style><p></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>预测Dos</th>
+      <th>预测probe</th>
+      <th>预测R2L</th>
+      <th>预测U2R</th>
+      <th>预测normal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>实际Dos</td>
+      <td>389703</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1746</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <td>实际probe</td>
+      <td>0</td>
+      <td>366</td>
+      <td>0</td>
+      <td>760</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>实际R2L</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>50</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>实际U2R</td>
+      <td>225</td>
+      <td>28</td>
+      <td>0</td>
+      <td>96975</td>
+      <td>50</td>
+    </tr>
+    <tr>
+      <td>实际normal</td>
+      <td>264</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2040</td>
+      <td>1803</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<h1 id="计算F1的值"><a href="#计算F1的值" class="headerlink" title="计算F1的值"></a>计算F1的值</h1><pre><code class="hljs python"><span class="hljs-keyword">from</span> sklearn.metrics <span class="hljs-keyword">import</span> f1_score
+
+print(f1_score(kdd_target, kdd_predict, average=<span class="hljs-literal">None</span>))</code></pre>
+
+<pre><code>[0.99712915 0.48157895 0.07407407 0.97536322 0.60412129]</code></pre>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/MachineLearning/">MachineLearning</a>
+                    
+                      <a class="hover-with-bg" href="/tags/IDS/">IDS</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/24/CNN-Dective-kdd99/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CNN_Dective_kdd99</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/06/25/通用shellcode/">
+                        <span class="hidden-mobile">通用ShellCode</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "<<基于特征分组聚类的异常入侵检测系统研究>>代码复现&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.staticfile.org/mathjax/3.0.5/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
