@@ -17,7 +17,7 @@
   <meta name="description" content="Stay hungry, Stay foolish">
   <meta name="author" content="Gale">
   <meta name="keywords" content="">
-  <title>PyTorch官方文档之torch.Tensor - Gale&#39;s Blog</title>
+  <title>Attention机制 - Gale&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -149,8 +149,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-05-16 23:16" pubdate>
-      2020年5月16日 晚上
+    <time datetime="2020-08-30 11:03" pubdate>
+      2020年8月30日 上午
     </time>
   </div>
 
@@ -160,7 +160,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.1k 字
+      1.5k 字
     </span>
   
 
@@ -200,258 +200,18 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">PyTorch官方文档之torch.Tensor</h1>
+            <h1 style="display: none">Attention机制</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>torch分别定义了CPU中存储和GPU中存储的两种类型.</p>
-<a id="more"></a>
-
-<table>
-<thead>
-<tr>
-<th>Data type</th>
-<th>dtype</th>
-<th>CPU tensor</th>
-<th>GPU tensor</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>32-bit floating point</td>
-<td>torch.float32 or torch.float</td>
-<td>torch.FloatTensor</td>
-<td>torch.cuda.FloatTensor</td>
-</tr>
-<tr>
-<td>64-bit floating point</td>
-<td>torch.float64 or torch.double</td>
-<td>torch.DoubleTensor</td>
-<td>torch.cuda.DoubleTensor</td>
-</tr>
-<tr>
-<td>16-bit floating point</td>
-<td>torch.float16 or torch.half</td>
-<td>torch.HalfTensor</td>
-<td>torch.cuda.HalfTensor</td>
-</tr>
-<tr>
-<td>8-bit integer (unsigned)</td>
-<td>torch.uint8</td>
-<td>torch.ByteTensor</td>
-<td>torch.cuda.ByteTensor</td>
-</tr>
-<tr>
-<td>8-bit integer (signed)</td>
-<td>torch.int8</td>
-<td>torch.CharTensor</td>
-<td>torch.cuda.CharTensor</td>
-</tr>
-<tr>
-<td>16-bit integer (signed)</td>
-<td>torch.int16 or torch.short</td>
-<td>torch.ShortTensor</td>
-<td>torch.cuda.ShortTensor</td>
-</tr>
-<tr>
-<td>32-bit integer (signed)</td>
-<td>torch.int32 or torch.int</td>
-<td>torch.IntTensor</td>
-<td>torch.cuda.IntTensor</td>
-</tr>
-<tr>
-<td>64-bit integer (signed)</td>
-<td>torch.int64 or torch.long</td>
-<td>torch.LongTensor</td>
-<td>torch.cuda.LongTensor</td>
-</tr>
-<tr>
-<td>Boolean</td>
-<td>torch.bool</td>
-<td>torch.BoolTensor</td>
-<td>torch.cuda.BoolTensor</td>
-</tr>
-<tr>
-<td>torch.Tensor()等于就是torch.FloatTensor()</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<pre><code class="hljs python"><span class="hljs-keyword">import</span> torch
-<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np</code></pre>
-
-<pre><code class="hljs python">a = torch.Tensor(<span class="hljs-number">1</span>) <span class="hljs-comment"># torch.Tensor()就是默认数据类型为torch.FloatTensor()的张量</span>
-b = torch.FloatTensor(<span class="hljs-number">1</span>)
-a,b <span class="hljs-comment"># torch.Tensor()创建一个默认类型为torch.FloatTensor()的张量,torch.FloatTensor()是CPU中类型</span></code></pre>
-
-
-
-
-<pre><code>(tensor([1.4013e-45]), tensor([1.4013e-45]))</code></pre>
-<p>使用Python中的list创建tensor张量,或者使用np.array()也可以</p>
-<pre><code class="hljs python">a = torch.tensor([[<span class="hljs-number">1.</span>, <span class="hljs-number">-1.</span>], [<span class="hljs-number">1.</span>, <span class="hljs-number">-1.</span>]]) <span class="hljs-comment"># 注意,这里创建的是内容为1.和-1.的tensor,不是维度,</span>
-b = torch.tensor(((<span class="hljs-number">1.</span>, <span class="hljs-number">-1.</span>), (<span class="hljs-number">1.</span>, <span class="hljs-number">-1.</span>))) <span class="hljs-comment"># 并且,这里用[]或()都一样</span>
-a, b</code></pre>
-
-
-
-
-<pre><code>(tensor([[ 1., -1.],
-         [ 1., -1.]]), tensor([[ 1., -1.],
-         [ 1., -1.]]))</code></pre>
-<pre><code class="hljs python">torch.tensor(np.array([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]]))</code></pre>
-
-
-
-
-<pre><code>tensor([[1, 2, 3],
-        [4, 5, 6]], dtype=torch.int32)</code></pre>
-<p>PS: 使用requires_grad_()或者detach()允许更改requires_grad的标志<br>使用torch.dtype指定类型,使用torch.device指定存储的位置</p>
-<pre><code class="hljs python">torch.zeros([<span class="hljs-number">2</span>, <span class="hljs-number">4</span>], dtype=torch.int32)</code></pre>
-
-
-
-
-<pre><code>tensor([[0, 0, 0, 0],
-        [0, 0, 0, 0]], dtype=torch.int32)</code></pre>
-<pre><code class="hljs python">cuda = torch.device(<span class="hljs-string">&#x27;cuda:0&#x27;</span>)
-torch.ones([<span class="hljs-number">2</span>, <span class="hljs-number">4</span>], dtype=torch.float64, device=cuda)</code></pre>
-
-
-
-
-<pre><code>tensor([[1., 1., 1., 1.],
-        [1., 1., 1., 1.]], device=&#39;cuda:0&#39;, dtype=torch.float64)</code></pre>
-<p>索引:可以使用Python的索引方式</p>
-<pre><code class="hljs python">x = torch.tensor([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>]])
-print(x)
-print(x[<span class="hljs-number">1</span>][<span class="hljs-number">2</span>])
-print(x[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>])
-x[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>] = <span class="hljs-number">8</span>
-print(x)</code></pre>
-
-<pre><code>tensor([[1, 2, 3],
-        [4, 5, 6]])
-tensor(6)
-tensor(6)
-tensor([[1, 8, 3],
-        [4, 5, 6]])</code></pre>
-<p>使用<code>torch.Tensor.item()</code>返回张量的值</p>
-<pre><code class="hljs python">x = torch.tensor([[<span class="hljs-number">1</span>]])
-print(x)
-print(x.item())
-x = torch.tensor(<span class="hljs-number">2.5</span>)
-print(x)
-print(x.item())</code></pre>
-
-<pre><code>tensor([[1]])
-1
-tensor(2.5000)
-2.5</code></pre>
-<p>使用<code>requires_grad=True</code>让tensor张量能够记下操作记录,以致于可以求导</p>
-<pre><code class="hljs python">x = torch.tensor([[<span class="hljs-number">1.</span>, <span class="hljs-number">-1.</span>], [<span class="hljs-number">1.</span>, <span class="hljs-number">1.</span>]], requires_grad=<span class="hljs-literal">True</span>)
-out = x.pow(<span class="hljs-number">2</span>).sum() <span class="hljs-comment"># out = x^2</span>
-out.backward() <span class="hljs-comment"># 求导:out = 2 * x</span>
-print(x.grad)</code></pre>
-
-<pre><code>tensor([[ 2., -2.],
-        [ 2.,  2.]])</code></pre>
-<p>NOTE:当需要改变现存的tensor的device时,使用<code>to()</code>方法</p>
-<h1 id="CLASS-torch-Tensor"><a href="#CLASS-torch-Tensor" class="headerlink" title="CLASS torch.Tensor"></a>CLASS torch.Tensor</h1><p>有几种创建tensor的方式</p>
-<ol>
-<li>用上述的<code>torch.tensor()</code>创建</li>
-<li>用torch.*来创建指定size的张量</li>
-<li>用一个张量的size来创建不同类型的张量,使用torch.*_like</li>
-<li>用一个张量的类型创建不同size的张量,使用torch.new_*</li>
-</ol>
-<p>例如:<code>torch.rand(),torch.rand_like(),torch.randn(),torch.randn_like()</code><br><code>,torch.randint(),torch.randint_like(),torch.randperm(),torch.empty() </code></p>
-<h2 id="new-tensor-data"><a href="#new-tensor-data" class="headerlink" title="new_tensor(data)"></a>new_tensor(data)</h2><p>创建一个数据为data其他都为原tensor类型的一个张量</p>
-<pre><code class="hljs python">t = torch.ones((<span class="hljs-number">2</span>, ), dtype=torch.int8)
-data = [[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]]
-t.new_tensor(data)</code></pre>
-
-
-
-
-<pre><code>tensor([[0, 1],
-        [2, 3]], dtype=torch.int8)</code></pre>
-<h2 id="new-full-size-fill-value"><a href="#new-full-size-fill-value" class="headerlink" title="new_full(size, fill_value)"></a>new_full(size, fill_value)</h2><p>返回一个用fill_value填充的size维度的Tensor,默认返回的dtype和device相同<br>fill_value标量</p>
-<pre><code class="hljs python">t = torch.ones((<span class="hljs-number">2</span>, ), dtype=torch.float64)
-t.new_full((<span class="hljs-number">3</span>, <span class="hljs-number">4</span>), <span class="hljs-number">3.141592</span>)</code></pre>
-
-
-
-
-<pre><code>tensor([[3.1416, 3.1416, 3.1416, 3.1416],
-        [3.1416, 3.1416, 3.1416, 3.1416],
-        [3.1416, 3.1416, 3.1416, 3.1416]], dtype=torch.float64)</code></pre>
-<h2 id="new-empty-size"><a href="#new-empty-size" class="headerlink" title="new_empty(size)"></a>new_empty(size)</h2><p>返回size维度的用随机初始化数据填充的Tensor</p>
-<pre><code class="hljs python">t = torch.ones((<span class="hljs-number">1</span> ))
-print(t)
-t.new_empty((<span class="hljs-number">2</span>, <span class="hljs-number">3</span>))</code></pre>
-
-<pre><code>tensor([1.])
-
-
-
-
-
-tensor([[0.0000e+00, 0.0000e+00, 1.4013e-45],
-        [0.0000e+00, 1.4013e-45, 0.0000e+00]])</code></pre>
-<h2 id="new-ones-size"><a href="#new-ones-size" class="headerlink" title="new_ones(size)"></a>new_ones(size)</h2><p>返回一个size维度但是用1填充的Tensor</p>
-<pre><code class="hljs python">t = torch.tensor((<span class="hljs-number">2.</span>))<span class="hljs-comment">#, dtype=torch.int32)</span>
-print(t.dtype)
-print(t.new_ones((<span class="hljs-number">2</span>, <span class="hljs-number">3</span>)))
-print(t)</code></pre>
-
-<pre><code>torch.float32
-tensor([[1., 1., 1.],
-        [1., 1., 1.]])
-tensor(2.)</code></pre>
-<h2 id="new-zeros-size"><a href="#new-zeros-size" class="headerlink" title="new_zeros(size)"></a>new_zeros(size)</h2><p>返回一个size大小用0填充的Tensor</p>
-<pre><code class="hljs python">tensor = torch.tensor((), dtype=torch.float64)
-tensor.new_zeros((<span class="hljs-number">2</span>, <span class="hljs-number">3</span>))</code></pre>
-
-
-
-
-<pre><code>tensor([[0., 0., 0.],
-        [0., 0., 0.]], dtype=torch.float64)</code></pre>
-<h2 id="is-cuda"><a href="#is-cuda" class="headerlink" title="is_cuda()"></a>is_cuda()</h2><p>如果tensor存储在GPU中返回True,否则返回False</p>
-<h2 id="is-quantized"><a href="#is-quantized" class="headerlink" title="is_quantized()"></a>is_quantized()</h2><p>如果tensor是量化的返回True,否则返回False</p>
-<h2 id="device"><a href="#device" class="headerlink" title="device"></a>device</h2><p>返回Tensor存在哪</p>
-<h2 id="grad"><a href="#grad" class="headerlink" title="grad"></a>grad</h2><p>记录求导<code>backward()</code>之后变量的值</p>
-<h2 id="ndim"><a href="#ndim" class="headerlink" title="ndim"></a>ndim</h2><p>dim()的别名,返回的tensor的维度</p>
-<h2 id="T"><a href="#T" class="headerlink" title="T"></a>T</h2><p>返回矩阵的转置</p>
-<pre><code class="hljs python">x = torch.tensor([[<span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>]])
-print(x)
-print(x.T)</code></pre>
-
-<pre><code>tensor([[0, 1],
-        [2, 3]])
-tensor([[0, 2],
-        [1, 3]])</code></pre>
-<h2 id="abs-abs"><a href="#abs-abs" class="headerlink" title="abs() / abs_()"></a>abs() / abs_()</h2><p>与torch.abs()相同,返回矩阵中元素的绝对值</p>
-<pre><code class="hljs python">torch.tensor([<span class="hljs-number">-1</span>, <span class="hljs-number">-2</span>, <span class="hljs-number">3</span>]).abs()</code></pre>
-
-
-
-
-<pre><code>tensor([1, 2, 3])</code></pre>
-<h2 id="acos-acos"><a href="#acos-acos" class="headerlink" title="acos() / acos_()"></a>acos() / acos_()</h2><p>与torch.acos()相同,返回arccos反余弦值</p>
-<h2 id="add-other-alpha-1-add"><a href="#add-other-alpha-1-add" class="headerlink" title="add(other, *, alpha=1) / add_()"></a>add(other, *, alpha=1) / add_()</h2><p>与torch.add()相同,返回张量+alpha*other</p>
-<pre><code class="hljs python">x = torch.ones((<span class="hljs-number">2</span>, <span class="hljs-number">3</span>))
-print(x)
-x.add(<span class="hljs-number">1</span>, alpha=<span class="hljs-number">2</span>)</code></pre>
-
-<pre><code>tensor([[1., 1., 1.],
-        [1., 1., 1.]])
-
-
-
-
-
-tensor([[3., 3., 3.],
-        [3., 3., 3.]])</code></pre>
+              <h1 id="两种注意力机制"><a href="#两种注意力机制" class="headerlink" title="两种注意力机制"></a>两种注意力机制</h1><p>​        在神经学中的注意力机制通常有两种，一种是聚焦式注意力机制（Fcous Attention），这种注意力机制指的是主动有意识的将聚焦于某一对象的注意力。另一种是自下而上的无意识的注意力机制，称为基于显著性的注意力机制（Saliency-Based Attention），这种注意力机制是无意识的，当有外界刺激时，才会去注意。一个例子就是<strong>鸡尾酒会效应</strong>，当一个人在吵闹的鸡尾酒会上和朋友聊天时，即使周围很吵闹干扰很多，他还是可以听到朋友说话的内容，这就是聚焦式注意力机制；但是当有人突然叫他的名字，他也能反应过来，这种就是无意识的基于显著性的注意力。</p>
+<p>​        我们希望神经网络能够模仿人的注意力的机制，在下面的介绍中，默认指的是聚焦式的注意力机制，我们希望神经网络能够关注到我们给他指定的信息。</p>
+<h1 id="注意力机制的基本原理"><a href="#注意力机制的基本原理" class="headerlink" title="注意力机制的基本原理"></a>注意力机制的基本原理</h1><h2 id="Soft-Attention模型"><a href="#Soft-Attention模型" class="headerlink" title="Soft Attention模型"></a>Soft Attention模型</h2><p> <img src="/images/%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6-1.png" srcset="/img/loading.gif" alt="preview"></p>
+<p>这里的一个场景是：翻译句子“ Tom chase Jerry ”成“汤姆追逐杰瑞”，由上图可以看到我们希望的是当我们翻译X_1=tom时，那么需要将Y_1注意到X_1这里，当翻译X_2=chase，Y_2=追逐就需要注意到X_2，如果Encoder仅仅输出一个数值，那么对于Decoder来说，Tom chase Jerry是相同分量的东西，这样效果可能就会不好。下面是目标句子中每个单词生成的过程：<br>$$<br>y_1 = f(C_1)<br>$$<br>$$<br>y_2 = f(C_2,y_1) \<br>$$<br>$$<br>y_3 = f(C_3, y_1, y_2)<br>$$<br>其中f是非线性函数，可以用RNN来代替。这里使用注意力概率分布来指代当前注意力集中的大小。对于英汉翻译来说，下面的公式表示了注意力概率分布。<br>$$<br>C_{汤姆}=g(0.6\times f1(“Tom”), 0.2\times f1(“Chase”), 0.2\times f1(“Jerry”))  \<br>$$<br>$$<br>C_{追逐}=g(0.2\times f1(“Tom”), 0.7\times f1(“Chase”), 0.1\times f1(“Jerry”))  \<br>$$<br>$$<br>C_{杰瑞}=g(0.3\times f1(“Tom”), 0.2\times f1(“Chase”), 0.5\times f1(“Jerry”))<br>$$<br>其中f1表示Encoder对英文单词做的某些变换，可以是RNN模型中，隐藏状态h。g实际上做的运算就是加权求和，但是具体到这个场景中就是Encoder根据单词的中间表示合成整个句子中间语义表示的变换函数，公式如下：<br>$$<br>C_i = \sum^{Lx}_{j=1}h_ja_{ij}<br>$$<br>Lx表示输入句子Source的长度，a_ij表示在Target输出第i个单词时，Source输入句子中第j个单词的注意力分配系数，而h_j表示Source输入句子中第j个单词的语义编码。假设下标i就是上面例子所说的“Chase”，那么Lx就是3，h1=f(“Tom”),h2=f(“Chase”),h3=f(“Jerry”)分别是输入句子中每个单词的语义编码，对应的注意力权值分别是0.6，0.2，0.2。下图是C_i的运算过程。</p>
+<p><img src="/images/%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6-2.jpg" srcset="/img/loading.gif"><br>$$a_i = p(z=i|X,q) $$<br>现在稍作总结，我们需要根据不同的目标变换我们的注意力，也就是C_i，而C是由Source中每个单词的语义编码乘上对应的权值，并将所有单词相加得来的，语义编码可以由RNN等模型来做，现在问题是如何求得每个单词的注意力权值，这就引入了注意力分布的概念，利用注意力分布来求出每个单词的注意力权值。</p>
+<h2 id="注意力分布"><a href="#注意力分布" class="headerlink" title="注意力分布"></a>注意力分布</h2><p>这里不限定场景，就是从N个输入向量[x_1, …, x_N]中选择出和某个特定任务相关的信息，需要引入一个和任务相关的表示，称为查询向量（Query Vector），通过一个打分函数来计算每一个输入向量和查询向量之间的相关性。这里的查询向量类似于上面的我们从Target中取出的“Tom”。注意力变量z表示在Source中被选择用来计算注意力权值的索引，z=i表示选择了第i个输入向量。首先计算在给定X和q的情况下，选择第i个输入向量的概率a_i.<br>$$a_i = p(z=i|X,q) $$<br>$$= softmax(s(x_i, q)) $$<br>$$= \frac{exp(s(x_i, q))}{\sum^{N}_{j=1}exp(s(x_j, q))}$$<br>其中a_i称为注意力分布（Attention Distribution），s（x_i， q）为注意力打分函数。也就是说我们拿Target中的汤姆来一一和输入向量中的“Tom”，“Chase”，“Jerry”来做打分，最后计算每个单词与汤姆的概率，概率大的说明权重就大。这里打分函数有以下4种。<br>$$<br>加性模型\qquad s(x_i, q)=v^Ttanh(Wx_i+Uq)<br>$$<br>$$<br>点积模型\qquad s(x_i, q)=x_i^Tq\qquad\qquad\qquad\quad\<br>$$<br>$$<br>缩放点积模型\qquad s(x_i, q)=\frac{x_i^Tq}{\sqrt{d}}\qquad\qquad\quad\<br>$$<br>$$<br>双线性模型\qquad s(x_i, q) = x_i^TWq\qquad\qquad\quad\<br>$$<br>其中W，U，v为可学习的参数，d为输入向量的维度。点积模型更好的利用矩阵乘积，计算效率更高。但当输入向量的维度d比较高时，点积模型的值通常有比较大的方差，从而导致softmax函数的梯度较小，缩放点积可以较好地处理这个问题。</p>
+<p><strong>加权平均</strong>注意力分布a_i可以解释为在给任务相关的查询q时，第i个输入向量受关注的程度。我们采用一个中“软性”的信息机制对输入信息进行汇总。<br>$$<br>att(X, q) = \sum^{N}_{i=1}a_ix_i<br>$$<br>上述公式就是软性注意力机制（Soft Attention Mechanism），下面给出软性注意力机制的示例。</p>
+<p><img src="/images/%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6-3.png" srcset="/img/loading.gif"></p>
+<h2 id="注意力机制的变体"><a href="#注意力机制的变体" class="headerlink" title="注意力机制的变体"></a>注意力机制的变体</h2><p>键值对注意力</p>
 
             </div>
             <hr>
@@ -464,7 +224,7 @@ tensor([[3., 3., 3.],
                     
                       <a class="hover-with-bg" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
                     
-                      <a class="hover-with-bg" href="/tags/PyTorch/">PyTorch</a>
+                      <a class="hover-with-bg" href="/tags/Attention/">Attention</a>
                     
                   </div>
                 
@@ -477,18 +237,12 @@ tensor([[3., 3., 3.],
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/08/30/Attention%E6%9C%BA%E5%88%B6/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Attention机制</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/03/24/CNN-Dective-kdd99/">
-                        <span class="hidden-mobile">CNN_Dective_kdd99</span>
+                      <a href="/2020/05/16/PyTorch%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E4%B9%8Btorch-Tensor/">
+                        <span class="hidden-mobile">PyTorch官方文档之torch.Tensor</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -660,7 +414,7 @@ tensor([[3., 3., 3.],
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "PyTorch官方文档之torch.Tensor&nbsp;",
+        "Attention机制&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
